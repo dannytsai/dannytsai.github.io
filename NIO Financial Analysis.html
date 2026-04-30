@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIO Inc. — Forensic Financial Analysis 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0b0e;
+    --bg2: #111116;
+    --bg3: #16161c;
+    --line: rgba(255,255,255,0.07);
+    --text: #ede9e3;
+    --muted: #7a7670;
+    --red: oklch(55% 0.22 15);
+    --red-dim: oklch(55% 0.22 15 / 0.15);
+    --amber: oklch(72% 0.17 65);
+    --amber-dim: oklch(72% 0.17 65 / 0.15);
+    --green: oklch(64% 0.14 155);
+    --green-dim: oklch(64% 0.14 155 / 0.15);
+    --accent: oklch(62% 0.12 240);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: var(--red); width: 0%; z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: linear-gradient(to bottom, var(--bg) 60%, transparent);
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .nav-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--red);
+    border: 1px solid var(--red);
+    padding: 4px 10px; border-radius: 2px;
+  }
+
+  /* ── SECTION BASE ── */
+  section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 120px 48px;
+  }
+  section.full {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0 48px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 30%, oklch(40% 0.10 15 / 0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, oklch(55% 0.08 240 / 0.08) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image:
+      linear-gradient(var(--text) 1px, transparent 1px),
+      linear-gradient(90deg, var(--text) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; max-width: 960px; margin: 0 auto; width: 100%; }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 24px;
+  }
+  .hero-title {
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 700; letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 32px;
+  }
+  .hero-title span { color: var(--red); }
+  .hero-sub {
+    font-size: 18px; color: var(--muted); max-width: 520px;
+    line-height: 1.6; margin-bottom: 64px;
+    font-weight: 300;
+  }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line);
+    max-width: 700px;
+  }
+  .hero-stat {
+    background: var(--bg);
+    padding: 24px 28px;
+  }
+  .hero-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .hero-stat-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px; font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .hero-stat-value.red { color: var(--red); }
+  .hero-stat-value.amber { color: var(--amber); }
+  .hero-stat-context {
+    font-size: 12px; color: var(--muted); margin-top: 4px;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 60px;
+    height: 1px; background: var(--line);
+  }
+
+  /* ── FINDING CARDS ── */
+  .finding {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 2px;
+  }
+  .finding-header {
+    display: flex; align-items: flex-start;
+    gap: 24px; padding: 36px 40px;
+    background: var(--bg2);
+  }
+  .finding-flag {
+    font-size: 24px; flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .finding-meta { flex: 1; }
+  .finding-rank {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .finding-title {
+    font-size: 22px; font-weight: 600;
+    letter-spacing: -0.02em; margin-bottom: 12px;
+  }
+  .finding-title.red { color: var(--red); }
+  .finding-title.amber { color: var(--amber); }
+  .finding-body {
+    font-size: 15px; color: var(--muted); line-height: 1.7;
+    max-width: 580px;
+  }
+  .finding-chart {
+    padding: 32px 40px;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+  }
+
+  /* ── CHART LABELS ── */
+  .chart-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+  }
+
+  /* ── BAR CHARTS ── */
+  .bar-group {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .bar-row {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .bar-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    width: 44px; flex-shrink: 0; text-align: right;
+  }
+  .bar-track {
+    flex: 1; height: 28px;
+    background: var(--bg3); border-radius: 2px;
+    overflow: hidden; position: relative;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 2px;
+    width: 0%; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+  .bar-fill::after {
+    content: attr(data-val);
+    position: absolute; right: 8px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    white-space: nowrap;
+  }
+  .bar-fill.red { background: var(--red); }
+  .bar-fill.red::after { color: rgba(255,255,255,0.9); }
+  .bar-fill.amber { background: var(--amber); }
+  .bar-fill.amber::after { color: rgba(0,0,0,0.7); }
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.green::after { color: rgba(0,0,0,0.7); }
+  .bar-fill.dim { background: var(--bg3); border: 1px solid var(--line); }
+  .bar-fill.dim::after { color: var(--muted); }
+
+  /* ── COMPARISON BARS ── */
+  .compare-bars { display: flex; flex-direction: column; gap: 14px; }
+  .compare-row { display: grid; grid-template-columns: 120px 1fr 70px; align-items: center; gap: 16px; }
+  .compare-name { font-size: 13px; color: var(--muted); text-align: right; }
+  .compare-name.highlight { color: var(--text); font-weight: 500; }
+  .compare-track { height: 20px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+  .compare-fill { height: 100%; border-radius: 2px; width: 0%; transition: width 1.2s cubic-bezier(0.16,1,0.3,1); }
+  .compare-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  /* ── SVG LINE CHART ── */
+  .line-chart-wrap { position: relative; }
+  .line-chart-wrap svg { width: 100%; height: auto; display: block; }
+
+  /* ── WATERFALL ── */
+  .waterfall { display: flex; flex-direction: column; gap: 2px; }
+  .wf-row { display: grid; grid-template-columns: 200px 1fr 120px; align-items: center; gap: 16px; }
+  .wf-label { font-size: 13px; color: var(--muted); }
+  .wf-label.bold { color: var(--text); font-weight: 500; }
+  .wf-track { height: 18px; background: var(--bg3); border-radius: 2px; overflow: hidden; position: relative; }
+  .wf-fill { height: 100%; border-radius: 2px; width: 0%; transition: width 1s cubic-bezier(0.16,1,0.3,1); }
+  .wf-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; text-align: right;
+  }
+  .wf-val.pos { color: var(--green); }
+  .wf-val.neg { color: var(--red); }
+
+  /* ── STAT GRID ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 32px 0; }
+  .stat-cell { background: var(--bg2); padding: 24px 20px; }
+  .stat-cell-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .stat-cell-value { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  .stat-cell-context { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* ── EQUITY BURN ── */
+  .equity-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+  .equity-bar-container { }
+  .equity-bar-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .equity-bar-outer { height: 40px; background: var(--bg3); border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+  .equity-bar-inner { height: 100%; border-radius: 3px; transition: width 1.4s cubic-bezier(0.16,1,0.3,1); }
+  .equity-numbers { display: flex; flex-direction: column; gap: 16px; }
+  .equity-num { }
+  .equity-num-val { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -0.03em; }
+  .equity-num-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ── RISK MATRIX ── */
+  .risk-matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 32px; }
+  .risk-cell {
+    padding: 20px 16px;
+    border-radius: 3px;
+    text-align: center;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .risk-cell:hover { transform: translateY(-2px); }
+  .risk-cell.red { background: var(--red-dim); border-color: oklch(55% 0.22 15 / 0.3); }
+  .risk-cell.amber { background: var(--amber-dim); border-color: oklch(72% 0.17 65 / 0.3); }
+  .risk-cell.green { background: var(--green-dim); border-color: oklch(64% 0.14 155 / 0.3); }
+  .risk-cell-icon { font-size: 20px; margin-bottom: 8px; }
+  .risk-cell-name { font-size: 11px; font-weight: 500; line-height: 1.3; }
+  .risk-cell-level { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; color: var(--muted); }
+
+  /* ── FOOTNOTE ── */
+  .footnote {
+    padding: 80px 48px;
+    border-top: 1px solid var(--line);
+    max-width: 960px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+  }
+  .footnote-title { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--muted); }
+  .footnote-list { display: flex; flex-direction: column; gap: 10px; }
+  .footnote-item {
+    font-size: 13px; color: var(--muted); line-height: 1.5;
+    padding-left: 16px; position: relative;
+  }
+  .footnote-item::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--red); font-size: 11px;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    border-left: 3px solid var(--red);
+    padding: 20px 28px;
+    margin: 32px 0;
+    background: var(--red-dim);
+    border-radius: 0 3px 3px 0;
+  }
+  .pull-quote p {
+    font-size: 16px; font-style: italic;
+    color: var(--text); line-height: 1.6;
+  }
+
+  /* ── TREND LINE SVG ANIMATION ── */
+  .path-animate { stroke-dasharray: 1000; stroke-dashoffset: 1000; transition: stroke-dashoffset 1.5s ease; }
+  .path-animate.drawn { stroke-dashoffset: 0; }
+
+  /* ── TICKER BADGE ── */
+  .ticker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 5px 12px; border-radius: 2px;
+    margin-bottom: 48px;
+  }
+  .ticker-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--red);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 18px 24px; }
+    section { padding: 80px 24px; }
+    .hero { padding: 0 24px 60px; }
+    .hero-stats { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: repeat(2,1fr); }
+    .equity-visual { grid-template-columns: 1fr; }
+    .risk-matrix { grid-template-columns: repeat(3,1fr); }
+    .footnote { grid-template-columns: 1fr; padding: 60px 24px; }
+    .compare-row { grid-template-columns: 80px 1fr 60px; }
+    .wf-row { grid-template-columns: 140px 1fr 90px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <div class="nav-logo">NIO Inc. · Forensic Analysis · FY2022–2025</div>
+  <div class="nav-badge">MANIPULATION RISK: HIGH</div>
+</nav>
+
+<!-- ──────────── HERO ──────────── -->
+<section class="full">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="ticker">
+        <div class="ticker-dot"></div>
+        NYSE: NIO · CNY · FY 2022–2025
+      </div>
+      <p class="hero-eyebrow">Skeptical Forensic Financial Analysis · Prepared 2026-05-01</p>
+      <h1 class="hero-title">The Numbers<br>Don't <span>Add Up</span></h1>
+      <p class="hero-sub">A forensic review of NIO's balance sheet reveals converging anomalies that suggest aggressive earnings management, structural liquidity risk, and possible circular transactions.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-label">Related-Party Recv / Equity</div>
+          <div class="hero-stat-value red" data-count="387">0%</div>
+          <div class="hero-stat-context">Up from 4.5% in 2022</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Supplier Days Outstanding</div>
+          <div class="hero-stat-value red" data-count="257">0</div>
+          <div class="hero-stat-context">Industry avg: 60–90 days</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Accumulated Deficit</div>
+          <div class="hero-stat-value amber">¥128B</div>
+          <div class="hero-stat-context">Since IPO; equity at ¥4.2B</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── FOUR-YEAR OVERVIEW ──────────── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">01 · Four-Year Snapshot</p>
+    <h2 style="font-size: 36px; margin-bottom: 16px;">Revenue grew. Losses persisted.</h2>
+    <p style="color: var(--muted); max-width: 560px; margin-bottom: 40px;">Total revenue expanded 77% from FY2022 to FY2025 — yet NIO has never posted a profitable year. Cumulative losses since IPO now exceed ¥128 billion.</p>
+  </div>
+
+  <div class="stat-grid reveal reveal-delay-1">
+    <div class="stat-cell">
+      <div class="stat-cell-label">Total Revenue '25</div>
+      <div class="stat-cell-value">¥87.5B</div>
+      <div class="stat-cell-context">+32% YoY</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell-label">Gross Margin '25</div>
+      <div class="stat-cell-value" style="color: var(--amber)">13.6%</div>
+      <div class="stat-cell-context">vs. BYD ~20%</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell-label">Operating Margin '25</div>
+      <div class="stat-cell-value" style="color: var(--red)">−18.2%</div>
+      <div class="stat-cell-context">Still deeply negative</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell-label">Net Loss '25</div>
+      <div class="stat-cell-value" style="color: var(--red)">¥−15.6B</div>
+      <div class="stat-cell-context">¥128B cumulative</div>
+    </div>
+  </div>
+
+  <!-- Gross Margin trend -->
+  <div class="finding-chart reveal reveal-delay-2" style="background: var(--bg2); border: 1px solid var(--line); border-radius: 4px; margin-top: 24px;">
+    <div class="chart-label">Gross Margin % — Four-Year Trend</div>
+    <div class="bar-group" id="gm-bars">
+      <div class="bar-row">
+        <div class="bar-year">2022</div>
+        <div class="bar-track">
+          <div class="bar-fill amber" data-pct="52" data-val="10.4%"></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-year">2023</div>
+        <div class="bar-track">
+          <div class="bar-fill red" data-pct="27.5" data-val="5.5% ▼ TROUGH"></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-year">2024</div>
+        <div class="bar-track">
+          <div class="bar-fill amber" data-pct="49.5" data-val="9.9%"></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-year">2025</div>
+        <div class="bar-track">
+          <div class="bar-fill green" data-pct="68" data-val="13.6% ▲"></div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: var(--muted); margin-top: 16px;">The 2023 trough coincided with Tesla-led industry price cuts. The 2025 recovery is plausible — but its quality is uncertain given working-capital distortions.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── FINDING 1 ──────────── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">02 · Finding #1 — Critical</p>
+  </div>
+  <div class="finding reveal reveal-delay-1">
+    <div class="finding-header">
+      <div class="finding-flag">🔴</div>
+      <div class="finding-meta">
+        <div class="finding-rank">Highest Risk · Balance Sheet Manipulation</div>
+        <div class="finding-title red">Related-Party Receivables: A Hockey Stick with No Explanation</div>
+        <div class="finding-body">
+          "Due from Related Parties" — money NIO claims it is owed by affiliated entities — exploded from ¥1.6B in 2022 to ¥16.1B in 2025. This single line item now exceeds NIO's <em>entire stockholders' equity</em> by 387%. No disclosed operational rationale explains a 10× increase in four years.
+        </div>
+      </div>
+    </div>
+    <div class="finding-chart">
+      <div class="chart-label">Due from Related Parties vs. Total Equity (¥ Billions)</div>
+      <div class="bar-group" id="rp-bars">
+        <div class="bar-row">
+          <div class="bar-year">2022</div>
+          <div class="bar-track">
+            <div class="bar-fill dim" style="background: var(--bg3)" data-pct="10" data-val="¥1.6B"></div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-year">2023</div>
+          <div class="bar-track">
+            <div class="bar-fill dim" data-pct="10.7" data-val="¥1.7B"></div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-year">2024</div>
+          <div class="bar-track">
+            <div class="bar-fill amber" data-pct="47.8" data-val="¥7.7B  ↑ 347%"></div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-year">2025</div>
+          <div class="bar-track">
+            <div class="bar-fill red" data-pct="100" data-val="¥16.1B  ↑ 109% · 387% of equity"></div>
+          </div>
+        </div>
+      </div>
+      <div class="pull-quote" style="margin-top: 24px;">
+        <p>"If even 20% of the ¥16.1B related-party receivable is impaired, the write-down would eliminate NIO's remaining equity entirely. This is the single most dangerous item in the filing."</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 8px;">
+        <div style="background: var(--bg3); border-radius: 3px; padding: 16px;">
+          <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase;">Possible Counterparty</div>
+          <div style="font-size: 13px;">ONVO sub-brand (launched 2024)</div>
+        </div>
+        <div style="background: var(--bg3); border-radius: 3px; padding: 16px;">
+          <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase;">Possible Structure</div>
+          <div style="font-size: 13px;">BaaS battery SPV · circular revenue</div>
+        </div>
+        <div style="background: var(--red-dim); border: 1px solid oklch(55% 0.22 15 / 0.3); border-radius: 3px; padding: 16px;">
+          <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red); margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase;">Net Asymmetry</div>
+          <div style="font-size: 13px; color: var(--text);">NIO owes affiliates only ¥626M → ¥15.5B net creditor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── FINDING 2 ──────────── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">03 · Finding #2 — Critical</p>
+  </div>
+  <div class="finding reveal reveal-delay-1">
+    <div class="finding-header">
+      <div class="finding-flag">🔴</div>
+      <div class="finding-meta">
+        <div class="finding-rank">Highest Risk · Liquidity Trap</div>
+        <div class="finding-title red">Accounts Payable at 257 Days — An Implicit ¥53B Loan from Suppliers</div>
+        <div class="finding-body">
+          NIO pays its suppliers on average 8.6 months after delivery. The automotive industry standard is 45–90 days. Tesla, BYD, Li Auto, and XPeng all pay in under 90 days. NIO's DPO has more than doubled since 2022. This represents off-balance-sheet financing — and if suppliers tighten terms, NIO could face a sudden ¥20–40B cash demand it cannot meet.
+        </div>
+      </div>
+    </div>
+    <div class="finding-chart">
+      <div class="chart-label">Days Payable Outstanding (DPO) — NIO vs. Industry</div>
+      <div class="compare-bars" id="dpo-compare">
+        <div class="compare-row">
+          <div class="compare-name">XPeng</div>
+          <div class="compare-track"><div class="compare-fill green" data-pct="29" style="background: var(--green)"></div></div>
+          <div class="compare-val" style="color: var(--green)">~75 days</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-name">Li Auto</div>
+          <div class="compare-track"><div class="compare-fill green" data-pct="31" style="background: var(--green)"></div></div>
+          <div class="compare-val" style="color: var(--green)">~80 days</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-name">Tesla</div>
+          <div class="compare-track"><div class="compare-fill green" data-pct="31" style="background: var(--green)"></div></div>
+          <div class="compare-val" style="color: var(--green)">~80 days</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-name">BYD</div>
+          <div class="compare-track"><div class="compare-fill green" data-pct="35" style="background: var(--green)"></div></div>
+          <div class="compare-val" style="color: var(--green)">~90 days</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-name highlight">NIO 2022</div>
+          <div class="compare-track"><div class="compare-fill" data-pct="41" style="background: var(--amber)"></div></div>
+          <div class="compare-val" style="color: var(--amber)">105 days</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-name highlight">NIO 2023</div>
+          <div class="compare-track"><div class="compare-fill" data-pct="80" style="background: var(--red)"></div></div>
+          <div class="compare-val" style="color: var(--red)">207 days</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-name highlight">NIO 2025</div>
+          <div class="compare-track"><div class="compare-fill" data-pct="100" style="background: var(--red)"></div></div>
+          <div class="compare-val" style="color: var(--red)">257 days ↑</div>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: var(--muted); margin-top: 20px;">The 2023 step-change (+134% in AP against only +8.2% revenue growth) was the most abrupt. Tier-1 suppliers including CATL bear significant credit risk with no compensation.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── FINDING 3 — EQUITY ──────────── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">04 · Finding #3 — Critical</p>
+  </div>
+  <div class="finding reveal reveal-delay-1">
+    <div class="finding-header">
+      <div class="finding-flag">🔴</div>
+      <div class="finding-meta">
+        <div class="finding-rank">Going Concern Risk · Equity Near Depletion</div>
+        <div class="finding-title red">Equity Has Declined 88% Since 2022. Mathematical Exhaustion by Mid-2026.</div>
+        <div class="finding-body">
+          NIO carries ¥4.2B in equity while losing ¥15–22B per year. At the 2025 loss rate, equity will reach zero within months. A further equity raise is mathematically necessary — the 2025 raise of ¥11.9B already diluted shares ~19%. Cash on hand fell from ¥39B in 2022 to ¥11.7B today.
+        </div>
+      </div>
+    </div>
+    <div class="finding-chart">
+      <div class="chart-label">Equity Erosion vs. Cash Burn (¥ Billions)</div>
+      <div class="equity-visual">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div>
+            <div class="equity-bar-label">Common Equity — 2022: ¥34.8B</div>
+            <div class="equity-bar-outer"><div class="equity-bar-inner" id="eq2022" style="background: var(--green); width: 0%"></div></div>
+          </div>
+          <div>
+            <div class="equity-bar-label">Common Equity — 2023: ¥38.6B</div>
+            <div class="equity-bar-outer"><div class="equity-bar-inner" id="eq2023" style="background: var(--green); width: 0%"></div></div>
+          </div>
+          <div>
+            <div class="equity-bar-label">Common Equity — 2024: ¥17.4B</div>
+            <div class="equity-bar-outer"><div class="equity-bar-inner" id="eq2024" style="background: var(--amber); width: 0%"></div></div>
+          </div>
+          <div>
+            <div class="equity-bar-label">Common Equity — 2025: ¥4.2B <span style="color: var(--red)">▼ −88% from peak</span></div>
+            <div class="equity-bar-outer"><div class="equity-bar-inner" id="eq2025" style="background: var(--red); width: 0%"></div></div>
+          </div>
+        </div>
+        <div class="equity-numbers">
+          <div class="equity-num">
+            <div class="equity-num-val" style="color: var(--red)">¥128B</div>
+            <div class="equity-num-label">Accumulated Deficit since IPO</div>
+          </div>
+          <div class="equity-num">
+            <div class="equity-num-val" style="color: var(--amber)">¥11.7B</div>
+            <div class="equity-num-label">Cash remaining (down from ¥39B in 2022)</div>
+          </div>
+          <div class="equity-num">
+            <div class="equity-num-val" style="color: var(--muted)">¥31.3B</div>
+            <div class="equity-num-label">Total debt outstanding</div>
+          </div>
+          <div style="background: var(--red-dim); border: 1px solid oklch(55% 0.22 15 / 0.3); border-radius: 3px; padding: 16px; margin-top: 8px;">
+            <div style="font-size: 13px; color: var(--text); line-height: 1.5;">Equity raises (¥21B in 2023, ¥11.9B in 2025) are the only factor preventing insolvency. Each raise dilutes existing shareholders further.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── FINDING 4 — R&D ──────────── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">05 · Finding #4 — Flagged</p>
+  </div>
+  <div class="finding reveal reveal-delay-1">
+    <div class="finding-header">
+      <div class="finding-flag">🟡</div>
+      <div class="finding-meta">
+        <div class="finding-rank">Moderate Risk · Capitalized Expense Concern</div>
+        <div class="finding-title amber">R&D Fell 21% While Launching Three New Platforms</div>
+        <div class="finding-body">
+          NIO launched the ET9 flagship, ONVO L60, and Firefly sub-brand in 2024–2025. Running three distinct vehicle platforms simultaneously with a 21% <em>reduction</em> in absolute R&D spend is implausible — unless development costs are being capitalized to the balance sheet rather than expensed, reducing reported operating losses and deferring charges to future periods.
+        </div>
+      </div>
+    </div>
+    <div class="finding-chart">
+      <div class="chart-label">R&D Spend (¥B) vs. R&D / Revenue %</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+        <div>
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 12px; font-family: 'DM Mono', monospace;">Absolute R&D (¥ Billions)</div>
+          <div class="bar-group" id="rd-bars">
+            <div class="bar-row">
+              <div class="bar-year">2022</div>
+              <div class="bar-track"><div class="bar-fill dim" data-pct="79" data-val="¥10.8B"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-year">2023</div>
+              <div class="bar-track"><div class="bar-fill amber" data-pct="100" data-val="¥13.4B ← PEAK"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-year">2024</div>
+              <div class="bar-track"><div class="bar-fill amber" data-pct="97" data-val="¥13.0B"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-year">2025</div>
+              <div class="bar-track"><div class="bar-fill red" data-pct="79" data-val="¥10.6B ↓ 3 platforms launched"></div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 11px; color: var(--muted); margin-bottom: 12px; font-family: 'DM Mono', monospace;">R&D as % of Revenue</div>
+          <div class="bar-group" id="rd-pct-bars">
+            <div class="bar-row">
+              <div class="bar-year">2022</div>
+              <div class="bar-track"><div class="bar-fill amber" data-pct="87" data-val="23.8%"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-year">2023</div>
+              <div class="bar-track"><div class="bar-fill red" data-pct="100" data-val="27.3%"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-year">2024</div>
+              <div class="bar-track"><div class="bar-fill amber" data-pct="82" data-val="22.4%"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-year">2025</div>
+              <div class="bar-track"><div class="bar-fill green" data-pct="50" data-val="13.8% ← suspicious"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: var(--muted); margin-top: 20px;">Gross PPE grew 16.7% (¥55.6B → ¥64.9B) while D&A rose 22% — consistent with large prior-year development costs being capitalized and now amortized. Magnitude unknown without access to capitalization policy footnotes.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── FINDING 5 — OCF ──────────── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">06 · Finding #5 — Flagged</p>
+  </div>
+  <div class="finding reveal reveal-delay-1">
+    <div class="finding-header">
+      <div class="finding-flag">🟡</div>
+      <div class="finding-meta">
+        <div class="finding-rank">Moderate Risk · Working Capital Illusion</div>
+        <div class="finding-title amber">The "Positive OCF" Moment Is Entirely an Accounting Artifact</div>
+        <div class="finding-body">
+          NIO's 2025 turn to positive operating cash flow (+¥3.0B) was cited widely as a milestone. In reality, the entire improvement is explained by two working-capital moves: delaying ¥18.4B in supplier payments and collecting ¥8.1B in receivables. Strip those out, and underlying operational cash flow is still deeply negative.
+        </div>
+      </div>
+    </div>
+    <div class="finding-chart">
+      <div class="chart-label">2025 OCF Waterfall Decomposition (¥ Billions)</div>
+      <div class="waterfall" id="waterfall">
+        <div class="wf-row">
+          <div class="wf-label bold">Reported Net Loss</div>
+          <div class="wf-track"><div class="wf-fill" data-pct="85" style="background: var(--red)" data-delay="0"></div></div>
+          <div class="wf-val neg">−¥15.6B</div>
+        </div>
+        <div class="wf-row">
+          <div class="wf-label">+ D&A Add-back</div>
+          <div class="wf-track"><div class="wf-fill" data-pct="57" style="background: var(--accent)" data-delay="100"></div></div>
+          <div class="wf-val pos">+¥9.4B</div>
+        </div>
+        <div class="wf-row">
+          <div class="wf-label bold" style="color: var(--red)">+ AP Delay (key!)</div>
+          <div class="wf-track"><div class="wf-fill" data-pct="100" style="background: var(--amber)" data-delay="200"></div></div>
+          <div class="wf-val pos" style="color: var(--amber)">+¥18.4B</div>
+        </div>
+        <div class="wf-row">
+          <div class="wf-label bold" style="color: var(--red)">− Receivables Change</div>
+          <div class="wf-track"><div class="wf-fill" data-pct="44" style="background: var(--red)" data-delay="300"></div></div>
+          <div class="wf-val neg">−¥8.1B</div>
+        </div>
+        <div class="wf-row">
+          <div class="wf-label">+ Other items</div>
+          <div class="wf-track"><div class="wf-fill" data-pct="10" style="background: var(--bg3); border: 1px solid var(--line)" data-delay="400"></div></div>
+          <div class="wf-val" style="color: var(--muted)">~¥0B</div>
+        </div>
+        <div class="wf-row" style="margin-top: 8px; border-top: 1px solid var(--line); padding-top: 12px;">
+          <div class="wf-label bold">= Reported OCF</div>
+          <div class="wf-track"><div class="wf-fill" data-pct="16" style="background: var(--green)" data-delay="500"></div></div>
+          <div class="wf-val pos">+¥3.0B</div>
+        </div>
+      </div>
+      <div style="background: var(--amber-dim); border: 1px solid oklch(72% 0.17 65 / 0.3); border-radius: 3px; padding: 16px; margin-top: 20px;">
+        <p style="font-size: 13px; color: var(--text);">AP + receivables changes alone contributed a combined ¥26.5B swing. Free cash flow remains negative at −¥3.1B. This is not operational improvement — it is working capital management, and it is not sustainable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── RISK SUMMARY ──────────── -->
+<section>
+  <div class="reveal">
+    <p class="section-label">07 · Risk Summary</p>
+    <h2 style="font-size: 32px; margin-bottom: 12px;">Five Converging Risk Vectors</h2>
+    <p style="color: var(--muted); max-width: 520px; margin-bottom: 32px;">No single anomaly is necessarily fatal. The convergence of all five — simultaneously — in a company with ¥4.2B equity and ¥128B in cumulative losses is the concern.</p>
+  </div>
+  <div class="risk-matrix reveal reveal-delay-1">
+    <div class="risk-cell red">
+      <div class="risk-cell-icon">⬆</div>
+      <div class="risk-cell-name">Related-Party Receivables</div>
+      <div class="risk-cell-level">Critical</div>
+    </div>
+    <div class="risk-cell red">
+      <div class="risk-cell-icon">⏳</div>
+      <div class="risk-cell-name">AP 257-Day DPO</div>
+      <div class="risk-cell-level">Critical</div>
+    </div>
+    <div class="risk-cell red">
+      <div class="risk-cell-icon">📉</div>
+      <div class="risk-cell-name">Equity Near Zero</div>
+      <div class="risk-cell-level">Critical</div>
+    </div>
+    <div class="risk-cell amber">
+      <div class="risk-cell-icon">🔬</div>
+      <div class="risk-cell-name">R&D Capitalization</div>
+      <div class="risk-cell-level">Flagged</div>
+    </div>
+    <div class="risk-cell amber">
+      <div class="risk-cell-icon">💧</div>
+      <div class="risk-cell-name">OCF Quality</div>
+      <div class="risk-cell-level">Flagged</div>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 32px;" class="reveal reveal-delay-2">
+    <div style="background: var(--bg2); padding: 24px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">OCI Risk</div>
+      <div style="font-size: 18px; font-family: 'Space Grotesk', sans-serif; color: var(--green);">Low</div>
+      <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">AOCI stable at ¥580M; no material recycling</div>
+    </div>
+    <div style="background: var(--bg2); padding: 24px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">Impairment Risk</div>
+      <div style="font-size: 18px; font-family: 'Space Grotesk', sans-serif; color: var(--red);">High</div>
+      <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">RP receivables carry zero allowance; ¥3.2B wipe-out scenario</div>
+    </div>
+    <div style="background: var(--bg2); padding: 24px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">Auditor Risk</div>
+      <div style="font-size: 18px; font-family: 'Space Grotesk', sans-serif; color: var(--amber);">Watch</div>
+      <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">PwC HK — going-concern qualification possible in 2026</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ──────────── FOLLOW-UP ──────────── -->
+<div class="footnote reveal">
+  <div>
+    <div class="footnote-title">KEY QUESTIONS FOR MANAGEMENT</div>
+    <div class="footnote-list">
+      <div class="footnote-item">Who are the counterparties in the ¥16.1B related-party receivable? What are repayment terms?</div>
+      <div class="footnote-item">Has NIO changed its R&D capitalization policy? Provide schedule of capitalized development costs 2022–2025.</div>
+      <div class="footnote-item">What proportion of ¥53.3B AP is past due? Have tier-1 suppliers imposed early payment demands?</div>
+      <div class="footnote-item">Provide Q4 delivery volumes vs. Q1–Q3 to test year-end loading patterns.</div>
+      <div class="footnote-item">Has PricewaterhouseCoopers HK issued or considered a going-concern qualification?</div>
+    </div>
+  </div>
+  <div>
+    <div class="footnote-title">DATA NOTES</div>
+    <div class="footnote-list">
+      <div class="footnote-item">All figures in CNY millions unless noted. FY 2022–2025.</div>
+      <div class="footnote-item">Source: NIO.xlsx — Income Statement, Balance Sheet, Cash Flow.</div>
+      <div class="footnote-item">Industry comparisons: BYD, Li Auto, XPeng — public filings, approximate.</div>
+      <div class="footnote-item">Forensic framework: multi-step skeptical analysis across revenue, OCI, balance sheet, capitalization, valuation, impairment, and ratios.</div>
+      <div class="footnote-item">Prepared 2026-05-01. Not investment advice.</div>
+    </div>
+    <div style="margin-top: 32px; padding: 20px; background: var(--red-dim); border: 1px solid oklch(55% 0.22 15 / 0.3); border-radius: 3px;">
+      <div style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--red); margin-bottom: 6px;">Overall Manipulation Risk</div>
+      <div style="font-size: 28px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: -0.03em;">HIGH</div>
+      <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">Multiple convergent anomalies across balance sheet, cash flow, and expense recognition.</div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 1px; background: var(--line); margin: 0 48px;"></div>
+<div style="padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; max-width: 960px; margin: 0 auto;">
+  <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em;">NIO INC. · FORENSIC REVIEW · 2026-05-01</div>
+  <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em;">NOT INVESTMENT ADVICE</div>
+</div>
+
+<script>
+// ── Progress bar
+window.addEventListener('scroll', () => {
+  const max = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('progress').style.width = (window.scrollY / max * 100) + '%';
+});
+
+// ── Counter animation
+function animateCounter(el) {
+  const target = parseInt(el.dataset.count);
+  const suffix = el.dataset.count.includes('.') ? '%' : (el.textContent.includes('%') ? '%' : '');
+  const isPercent = el.textContent.includes('%') || el.id === 'pct';
+  let start = null;
+  const duration = 1600;
+  function step(ts) {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = Math.round(ease * target);
+    el.textContent = val + (el.dataset.count ? '%' : '');
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── Trigger counters once in view
+const counterEls = document.querySelectorAll('[data-count]');
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.counted) {
+      e.target.dataset.counted = '1';
+      animateCounter(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+counterEls.forEach(el => counterObs.observe(el));
+
+// ── Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => revealObs.observe(el));
+
+// ── Animate bars when parent becomes visible
+function animateBars(container) {
+  container.querySelectorAll('.bar-fill').forEach(bar => {
+    const pct = parseFloat(bar.dataset.pct);
+    setTimeout(() => { bar.style.width = pct + '%'; }, 100);
+  });
+  container.querySelectorAll('.compare-fill').forEach(bar => {
+    const pct = parseFloat(bar.dataset.pct);
+    setTimeout(() => { bar.style.width = pct + '%'; }, 200);
+  });
+}
+
+function animateWaterfall(container) {
+  container.querySelectorAll('.wf-fill').forEach(bar => {
+    const pct = parseFloat(bar.dataset.pct);
+    const delay = parseInt(bar.dataset.delay || 0);
+    setTimeout(() => { bar.style.width = pct + '%'; }, delay + 100);
+  });
+}
+
+function animateEquity() {
+  const data = [
+    { id: 'eq2022', pct: 100 },
+    { id: 'eq2023', pct: 100 },
+    { id: 'eq2024', pct: 45 },
+    { id: 'eq2025', pct: 11 },
+  ];
+  data.forEach((d, i) => {
+    const el = document.getElementById(d.id);
+    if (el) setTimeout(() => { el.style.width = d.pct + '%'; }, i * 150 + 100);
+  });
+}
+
+// Observe specific chart containers
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateBars(e.target);
+      const wf = e.target.querySelector('.waterfall');
+      if (wf) animateWaterfall(wf);
+      const eq = e.target.querySelector('#eq2022');
+      if (eq) animateEquity();
+      chartObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.finding-chart, .finding, section').forEach(el => {
+  chartObs.observe(el);
+});
+
+// Hero stat counters
+setTimeout(() => {
+  document.querySelectorAll('.hero-stat-value[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    let start = null;
+    const duration = 2000;
+    function step(ts) {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 4);
+      el.textContent = Math.round(ease * target) + '%';
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target + '%';
+    }
+    requestAnimationFrame(step);
+  });
+}, 800);
+
+// DPO second hero stat
+setTimeout(() => {
+  const dpoEl = document.querySelector('.hero-stat-value[data-count="257"]');
+  if (dpoEl) {
+    let start = null;
+    const duration = 2200;
+    function step(ts) {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 4);
+      dpoEl.textContent = Math.round(ease * 257);
+      if (p < 1) requestAnimationFrame(step);
+      else dpoEl.textContent = 257;
+    }
+    requestAnimationFrame(step);
+  }
+}, 1000);
+</script>
+</body>
+</html>
