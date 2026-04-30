@@ -1,35 +1,241 @@
-<html>
-	<head>
-		<title>Hi my name is Danny</title>
-		<style>
-			p{color:coral; font-size:0px; font-family:Papyrus}				
-			h2{color:#00AEAE; font-family:fantasy}
-</style>	</head>
-	<body style="background-color:grey;">
-    		<a href="example1.html">link1</a> &middot;
-		<a href="dannyshtml.html">link2</a>  &middot;
-		<a href="https://dannytsai.github.io/image/uploadedimg.html">memes</a>
-		<center><h1>Danny Tsai</h1>
-		<p>NTPU's student<p>
-		<p>18 year old</p>
-		<p>male</p>
-		<center><h1>contact</h1>
-		<h2>line:danny0618</h2>
-		<h2>phone:0905984808</h2>
-		<h2>nice to meet you!</h2>
-		<h2>Glad to be in your class!</h2>
-		<hr></hr>
-			<center><h1>introduction</h1>
-			<p>My name is Danny Tsai, I'm a freshman accounting student,</p>
-			I love playing violin and games(esspecially LOL).<p> According to
-			my hobbies, my personal page this time is about violin masterpeice.
-			And of course, some meme!</p>
-				<hr></hr>
-		<ol>
-			<li>good morning</li>
-			<li>zhou an</li>
-			<li>ohiyo</li>
-		</ol>
 
-	</body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danny Tsai</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:    oklch(97% 0.008 240);
+      --ink:   oklch(18% 0.012 240);
+      --sub:   oklch(52% 0.012 240);
+      --line:  oklch(88% 0.010 240);
+      --accent: oklch(52% 0.14 250);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── layout ── */
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .card {
+      width: min(680px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── animated SVG mark ── */
+    .mark {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: rise 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .mark-ring {
+      stroke-dasharray: 160;
+      stroke-dashoffset: 160;
+      animation: draw 0.9s 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    @keyframes draw {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* ── name ── */
+    .name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.6rem, 7vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise 0.7s 0.25s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ── role ── */
+    .role {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--sub);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: rise 0.7s 0.40s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    /* ── divider ── */
+    .divider {
+      margin: 2.6rem 0;
+      height: 1px;
+      background: var(--line);
+      width: 0;
+      animation: expand 0.8s 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    @keyframes expand {
+      to { width: 100%; }
+    }
+
+    /* ── bio grid ── */
+    .bio {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem 3rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: rise 0.7s 0.65s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .bio-item label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sub);
+      margin-bottom: 0.4rem;
+    }
+
+    .bio-item p {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    /* ── contact link ── */
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2.6rem;
+      font-size: 0.92rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: rise 0.7s 0.78s cubic-bezier(0.22,1,0.36,1) forwards;
+      transition: opacity 0.2s;
+    }
+
+    .contact-link:hover { opacity: 0.68; }
+
+    .contact-link svg {
+      flex-shrink: 0;
+    }
+
+    /* ── footer ── */
+    footer {
+      margin-top: 4rem;
+      font-size: 0.72rem;
+      color: var(--line);
+      letter-spacing: 0.06em;
+      opacity: 0;
+      animation: rise 0.7s 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    /* ── floating dots (background) ── */
+    .dots {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.06;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0) scale(1); }
+      50%  { transform: translateY(-22px) scale(1.08); }
+      to   { transform: translateY(0) scale(1); }
+    }
+
+    .card { position: relative; z-index: 1; }
+
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- background ambient dots -->
+  <div class="dots" aria-hidden="true">
+    <div class="dot" style="width:180px;height:180px;top:8%;left:72%;animation-duration:9s;animation-delay:-2s;"></div>
+    <div class="dot" style="width:80px;height:80px;top:62%;left:10%;animation-duration:12s;animation-delay:-5s;"></div>
+    <div class="dot" style="width:40px;height:40px;top:82%;left:82%;animation-duration:7s;animation-delay:-1s;opacity:0.04;"></div>
+  </div>
+
+  <main class="card">
+
+    <!-- animated mark -->
+    <svg class="mark" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle class="mark-ring" cx="28" cy="28" r="25" stroke="var(--accent)" stroke-width="1.5"/>
+      <polyline points="16,30 24,20 32,26 40,16" stroke="var(--accent)" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"
+        stroke-dasharray="50" stroke-dashoffset="50"
+        style="animation: draw 0.7s 0.8s cubic-bezier(0.22,1,0.36,1) forwards;"/>
+    </svg>
+
+    <h1 class="name">Danny <em>Tsai</em></h1>
+    <p class="role">Financial &amp; Economic Analyst</p>
+
+    <div class="divider"></div>
+
+    <div class="bio">
+      <div class="bio-item">
+        <label>Specialization</label>
+        <p>Financial Analysis</p>
+      </div>
+      <div class="bio-item">
+        <label>Domain</label>
+        <p>Economics &amp; Markets</p>
+      </div>
+    </div>
+
+    <a class="contact-link" href="/cdn-cgi/l/email-protection#1c787d7272652c2a2d24322e5c7b717d7570327f7371">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <rect x="1.5" y="3.5" width="13" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <polyline points="1.5,4 8,9.5 14.5,4" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <span class="__cf_email__" data-cfemail="593d38373720696f6861776b193e34383035773a3634">[email&#160;protected]</span>
+    </a>
+
+    <footer>© 2026 Danny Tsai</footer>
+
+  </main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
 </html>
