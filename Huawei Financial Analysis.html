@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huawei Forensic Financial Analysis 2021–2025</title>
+<script src="deck-stage.js"></script>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Welcome. This is a forensic financial analysis of Huawei's reported results from 2021 to 2025. The overall manipulation risk is rated Medium-High. Let's walk through the evidence.",
+  "Huawei is a private company, audited by KPMG, but without SEC, SOX, or PCAOB oversight. Revenue has recovered to near-record levels, but the quality of earnings is increasingly difficult to assess from public data alone.",
+  "Revenue recovered strongly through 2024 then slowed sharply to 2.2% in 2025. Meanwhile operating profit swings are extreme — a hallmark of non-recurring item management rather than genuine operating leverage.",
+  "The gap between operating profit and net profit has widened every single year — from 6% in 2021 to nearly 30% in 2025. A CNY 28.9 billion wedge with no public explanation is a material disclosure gap.",
+  "Huawei's cloud revenue has been restated downward in every single annual report — three years in a row — with no formal restatement notice. Over CNY 25 billion has been silently reclassified.",
+  "The Other segment was restated upward by CNY 10 billion in 2025 comparatives, then immediately collapsed 76.4% to CNY 7 billion. This is consistent with one-time revenues being parked and then disappearing.",
+  "Cash is declining despite record operating cash flow. Over CNY 330 billion in investing outflows over two years are not publicly itemized. De-leveraging is real but the deployment of capital is opaque.",
+  "Automotive is the genuine bright spot — 72% revenue growth and first-time profitability. ICT infrastructure is credible. Cloud is losing market share to Alibaba Cloud, which grew 36% in the same period.",
+  "R&D is at a record CNY 192.3 billion — 21.8% of revenue. But the IFRS IAS 38 capitalization split is undisclosed. At 10% capitalization, this is approximately CNY 19 billion per year of deferred expense.",
+  "Five key risk items summarize the concerns: cloud reclassifications, the Other segment collapse, inflated 2023 profits from asset sales, unknown R&D capitalization, and a widening profit quality gap. The underlying business may be improving — but disclosed figures cannot be cleanly attributed to specific operating drivers."
+]
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f7f6f3;
+    --bg-dark: #0f0f0e;
+    --ink: #14130f;
+    --ink-muted: #6b6760;
+    --ink-faint: #b8b5ae;
+    --accent-red: oklch(52% 0.19 25);
+    --accent-amber: oklch(68% 0.17 68);
+    --accent-green: oklch(58% 0.15 155);
+    --accent-blue: oklch(55% 0.16 240);
+    --card-bg: #ffffff;
+    --border: #e8e5df;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  deck-stage {
+    --slide-bg: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  section {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes barGrow {
+    from { transform: scaleY(0); }
+    to   { transform: scaleY(1); }
+  }
+  @keyframes lineGrow {
+    from { stroke-dashoffset: 1000; }
+    to   { stroke-dashoffset: 0; }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slideLeft {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes widthGrow {
+    from { width: 0; }
+    to   { width: var(--target-w); }
+  }
+  @keyframes countUp {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* Animations are triggered by JS on slide activation.
+     Elements start visible; JS adds opacity:0 then triggers .played */
+  .anim-up.played    { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+  .anim-in.played    { animation: fadeIn 0.5s ease both; }
+  .anim-scale.played { animation: scaleIn 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+  .anim-left.played  { animation: slideLeft 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+
+  /* staggered delays */
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.2s; }
+  .d3 { animation-delay: 0.35s; }
+  .d4 { animation-delay: 0.5s; }
+  .d5 { animation-delay: 0.65s; }
+  .d6 { animation-delay: 0.8s; }
+  .d7 { animation-delay: 0.95s; }
+  .d8 { animation-delay: 1.1s; }
+
+  /* ─── SLIDE 1: COVER ─── */
+  #s1 {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .cover-inner {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: absolute;
+    inset: 0;
+  }
+
+  .cover-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 80px 100px 120px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cover-right {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* animated accent strip top */
+  .cover-top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, oklch(68% 0.17 68), oklch(52% 0.19 25), oklch(55% 0.16 240));
+    z-index: 10;
+  }
+
+  .cover-eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: oklch(52% 0.19 25);
+    margin-bottom: 28px;
+  }
+  .cover-title {
+    font-size: 100px;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 36px;
+    color: var(--ink);
+  }
+  .cover-title em {
+    color: oklch(52% 0.17 68);
+    font-style: normal;
+  }
+  .cover-subtitle {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    margin-bottom: 56px;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+  }
+  .cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cover-meta-label {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .cover-meta-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .risk-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: oklch(52% 0.19 25 / 0.08);
+    border: 1.5px solid oklch(52% 0.19 25 / 0.4);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: oklch(38% 0.19 25);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    width: fit-content;
+    margin-bottom: 40px;
+  }
+  .risk-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: oklch(52% 0.19 25);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* right panel: animated sparkline decoration */
+  .cover-viz {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+  .cover-viz-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #eeeae3 0%, #f7f6f3 60%);
+  }
+  .cover-stat-cluster {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 80px 60px;
+  }
+  .cover-big-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 40px 60px;
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+    text-align: center;
+  }
+  .cover-big-stat:last-child { border-bottom: none; }
+  .cover-big-num {
+    font-size: 72px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-family: 'DM Mono', monospace;
+  }
+  .cover-big-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── SLIDE LAYOUTS ─── */
+  .slide-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 52px 120px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .slide-num {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-family: 'DM Mono', monospace;
+  }
+  .slide-title {
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .slide-title-section {
+    padding: 80px 120px 0;
+  }
+  .slide-eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 12px;
+  }
+  .slide-content {
+    position: absolute;
+    inset: 0;
+    padding: 180px 120px 80px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── SLIDE 2: EXEC SUMMARY ─── */
+  #s2 {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  #s2 .slide-num { color: var(--ink-faint); }
+  #s2 .slide-title { color: var(--ink); }
+  #s2 .slide-eyebrow { color: oklch(52% 0.19 25); }
+
+  .exec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    flex: 1;
+    margin-top: 24px;
+  }
+  .exec-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .exec-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 2px 0 0 2px;
+  }
+  .exec-card.amber::before { background: oklch(68% 0.17 68); }
+  .exec-card.red::before   { background: oklch(52% 0.19 25); }
+  .exec-card.green::before { background: oklch(58% 0.15 155); }
+  .exec-card-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-family: 'DM Mono', monospace;
+  }
+  .exec-card-big {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .exec-card-big.red   { color: oklch(38% 0.19 25); }
+  .exec-card-big.amber { color: oklch(45% 0.17 68); }
+  .exec-card-big.green { color: oklch(38% 0.15 155); }
+  .exec-card-desc {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+  .exec-right {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .finding-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .finding-row.flag-red   { border-left: 3px solid oklch(52% 0.19 25); }
+  .finding-row.flag-amber { border-left: 3px solid oklch(68% 0.17 68); }
+  .finding-row.flag-green { border-left: 3px solid oklch(58% 0.15 155); }
+  .finding-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .finding-icon.red   { background: oklch(52% 0.19 25 / 0.1); }
+  .finding-icon.amber { background: oklch(68% 0.17 68 / 0.1); }
+  .finding-icon.green { background: oklch(58% 0.15 155 / 0.1); }
+  .finding-text {
+    flex: 1;
+  }
+  .finding-text strong {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .finding-text span {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* ─── SLIDE 3: REVENUE ─── */
+  .chart-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .bar-chart {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 40px;
+    padding: 0 0 0 60px;
+    position: relative;
+  }
+  .bar-chart-grid {
+    position: absolute;
+    inset: 0 0 0 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .bar-chart-gridline {
+    border-top: 1px solid var(--border);
+    width: 100%;
+    position: relative;
+  }
+  .bar-chart-gridline span {
+    position: absolute;
+    right: calc(100% + 8px);
+    top: -10px;
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .bar-wrap {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  /* bar/line animations — triggered by JS class, not auto-play */
+  .bar {
+    width: 64px;
+    border-radius: 6px 6px 0 0;
+    transform-origin: bottom;
+    position: relative;
+  }
+  .bar.played { animation: barGrow 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+  .bar-rev { background: var(--ink); }
+  .bar-op  { background: var(--accent-amber); }
+  .bar-net { background: var(--accent-red); }
+
+  .bar-value {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
+  }
+  .bar-year {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
+  .chart-legend {
+    display: flex;
+    gap: 32px;
+    margin-top: 16px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+  }
+
+  /* ─── SLIDE 4: PROFIT GAP ─── */
+  .gap-chart {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    position: relative;
+  }
+  .gap-year-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 0 16px;
+  }
+  .gap-bars {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+  }
+  .gap-bar-op {
+    width: 56px;
+    border-radius: 6px 6px 0 0;
+    background: var(--ink);
+    transform-origin: bottom;
+  }
+  .gap-bar-op.played { animation: barGrow 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+  .gap-bar-net {
+    width: 56px;
+    border-radius: 6px 6px 0 0;
+    background: var(--accent-amber);
+    transform-origin: bottom;
+  }
+  .gap-bar-net.played { animation: barGrow 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+  .gap-pct-badge {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: oklch(52% 0.19 25);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
+  }
+  .gap-year-label {
+    margin-top: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
+  .insight-box {
+    background: oklch(52% 0.19 25 / 0.08);
+    border: 1px solid oklch(52% 0.19 25 / 0.25);
+    border-radius: 10px;
+    padding: 24px 32px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .insight-icon {
+    font-size: 28px;
+  }
+  .insight-text {
+    font-size: 20px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .insight-text strong {
+    color: oklch(42% 0.19 25);
+    font-weight: 700;
+  }
+
+  /* ─── SLIDE 5: SEGMENTS ─── */
+  .seg-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .seg-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+  }
+  .seg-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .seg-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .seg-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .seg-value {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    color: var(--ink-muted);
+  }
+  .seg-bar-track {
+    height: 10px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .seg-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+  }
+  .seg-bar-fill.played {
+    animation: widthGrow 0.8s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .seg-yoy {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+  }
+  .seg-yoy.up { color: var(--accent-green); }
+  .seg-yoy.down { color: var(--accent-red); }
+  .seg-yoy.flat { color: var(--ink-faint); }
+
+  .seg-summary-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+  }
+  .seg-sum-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .seg-sum-card.highlight {
+    background: #0f0f0e;
+    border-color: #2a2a27;
+    color: #f0ede6;
+  }
+  .seg-sum-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .seg-sum-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .seg-sum-card.highlight .seg-sum-label { color: #3a3a37; }
+  .seg-sum-value {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+  }
+  .seg-sum-card.highlight .seg-sum-value { color: #f0ede6; }
+  .seg-sum-badge {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+  .seg-sum-badge.up { background: oklch(58% 0.15 155 / 0.12); color: oklch(42% 0.15 155); }
+  .seg-sum-badge.boom { background: oklch(55% 0.16 240 / 0.12); color: oklch(40% 0.16 240); }
+  .seg-sum-badge.warn { background: oklch(52% 0.19 25 / 0.12); color: oklch(42% 0.19 25); }
+
+  /* ─── SLIDE 6: CLOUD ─── */
+  #s6 { background: var(--bg); }
+  .cloud-timeline {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    justify-content: center;
+  }
+  .timeline-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+  .timeline-year {
+    width: 120px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    color: var(--ink-muted);
+    text-align: right;
+    padding-right: 24px;
+  }
+  .timeline-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .timeline-dot.red { background: oklch(52% 0.19 25); }
+  .timeline-connector {
+    position: absolute;
+    left: 128px;
+    top: 50%;
+    width: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .timeline-card {
+    flex: 1;
+    margin-left: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .timeline-card.flagged {
+    border-color: oklch(52% 0.19 25 / 0.4);
+    background: oklch(52% 0.19 25 / 0.04);
+  }
+  .timeline-card-label {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .timeline-nums {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .timeline-original {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    text-decoration: line-through;
+    color: var(--ink-faint);
+  }
+  .timeline-arrow {
+    font-size: 20px;
+    color: oklch(52% 0.19 25);
+  }
+  .timeline-restated {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    color: oklch(42% 0.19 25);
+  }
+  .timeline-delta {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 10px;
+    background: oklch(52% 0.19 25 / 0.12);
+    color: oklch(42% 0.19 25);
+    border-radius: 6px;
+  }
+  .cloud-stat-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .cloud-stat-card {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cloud-stat-card.danger {
+    border-color: oklch(52% 0.19 25 / 0.3);
+    background: oklch(52% 0.19 25 / 0.04);
+  }
+  .cloud-stat-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .cloud-stat-value {
+    font-size: 38px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: -0.02em;
+  }
+  .cloud-stat-desc {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* ─── SLIDE 7: OTHER ANOMALY ─── */
+  .anomaly-layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 24px;
+  }
+  .anomaly-chart-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .anomaly-bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    height: 420px;
+    position: relative;
+    padding-bottom: 40px;
+    border-bottom: 2px solid var(--border);
+  }
+  .anomaly-bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .anomaly-bar {
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    transform-origin: bottom;
+    position: relative;
+  }
+  .anomaly-bar.played { animation: barGrow 0.8s cubic-bezier(0.22,1,0.36,1) both; }
+  .anomaly-bar-val {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+  .anomaly-bar-lbl {
+    position: absolute;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+  .anomaly-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+  }
+  .anomaly-note {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .anomaly-note.red {
+    border-color: oklch(52% 0.19 25 / 0.3);
+    background: oklch(52% 0.19 25 / 0.04);
+  }
+  .anomaly-note-num {
+    font-size: 28px;
+    font-weight: 800;
+    font-family: 'DM Mono', monospace;
+    color: oklch(52% 0.19 25);
+    line-height: 1;
+  }
+  .anomaly-note-text strong {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .anomaly-note-text p {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  /* ─── SLIDE 8: BALANCE SHEET ─── */
+  .bs-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    margin-top: 16px;
+  }
+  .bs-chart-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .line-chart-svg {
+    flex: 1;
+  }
+  .line-chart-svg path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  .line-chart-svg path.played {
+    animation: lineGrow 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .bs-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+  }
+  .bs-stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px 28px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .bs-stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .bs-stat-value {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-family: 'DM Mono', monospace;
+  }
+  .bs-stat-note {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* ─── SLIDE 9: RATIO DASHBOARD ─── */
+  .ratio-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .ratio-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ratio-card.alert {
+    border-color: oklch(52% 0.19 25 / 0.35);
+    background: oklch(52% 0.19 25 / 0.04);
+  }
+  .ratio-card.good {
+    border-color: oklch(58% 0.15 155 / 0.35);
+    background: oklch(58% 0.15 155 / 0.04);
+  }
+  .ratio-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-family: 'DM Mono', monospace;
+  }
+  .ratio-value {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-family: 'DM Mono', monospace;
+  }
+  .ratio-value.red { color: oklch(42% 0.19 25); }
+  .ratio-value.amber { color: oklch(52% 0.17 68); }
+  .ratio-value.green { color: oklch(38% 0.15 155); }
+  .ratio-value.dark { color: var(--ink); }
+  .ratio-trend {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+  .ratio-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-top: auto;
+    width: fit-content;
+  }
+  .ratio-flag.red { background: oklch(52% 0.19 25 / 0.12); color: oklch(38% 0.19 25); }
+  .ratio-flag.amber { background: oklch(68% 0.17 68 / 0.15); color: oklch(42% 0.17 68); }
+  .ratio-flag.green { background: oklch(58% 0.15 155 / 0.12); color: oklch(38% 0.15 155); }
+
+  /* ─── SLIDE 10: RISK SUMMARY ─── */
+  #s10 {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  #s10 .slide-num { color: var(--ink-faint); }
+  #s10 .slide-title { color: var(--ink); }
+  #s10 .slide-eyebrow { color: oklch(52% 0.19 25); }
+
+  .risk-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .risk-item {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    padding: 22px 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .risk-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: oklch(52% 0.19 25);
+    border-radius: 0 2px 2px 0;
+  }
+  .risk-item.amber::before { background: oklch(68% 0.17 68); }
+  .risk-item.green::before { background: oklch(58% 0.15 155); }
+  .risk-num {
+    font-size: 32px;
+    font-weight: 800;
+    font-family: 'DM Mono', monospace;
+    color: oklch(52% 0.19 25);
+    line-height: 1;
+    width: 48px;
+    flex-shrink: 0;
+  }
+  .risk-item.amber .risk-num { color: oklch(52% 0.17 68); }
+  .risk-item.green .risk-num { color: oklch(48% 0.15 155); }
+  .risk-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .risk-title-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+  .risk-desc {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    max-width: 800px;
+  }
+  .risk-amount {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    color: oklch(38% 0.19 25);
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: oklch(52% 0.19 25 / 0.08);
+    padding: 8px 18px;
+    border-radius: 8px;
+  }
+  .risk-item.amber .risk-amount {
+    color: oklch(38% 0.17 68);
+    background: oklch(68% 0.17 68 / 0.1);
+  }
+  .risk-item.green .risk-amount {
+    color: oklch(38% 0.15 155);
+    background: oklch(58% 0.15 155 / 0.1);
+  }
+
+  /* horizontal rule dividers in bar charts */
+  .chart-grid-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<deck-stage>
+
+  <!-- ══ SLIDE 1: COVER ══ -->
+  <section data-screen-label="01 Cover" id="s1">
+    <div class="cover-top-bar"></div>
+    <div class="cover-inner">
+
+    <!-- LEFT: text content -->
+    <div class="cover-left">
+      <div class="anim-up d1">
+        <div class="cover-eyebrow">Forensic Financial Analysis</div>
+      </div>
+      <div class="cover-title anim-up d2">Huawei<br><em>2021–2025</em></div>
+      <div class="cover-subtitle anim-up d3">A five-year examination of earnings quality, segment reporting, and disclosure gaps</div>
+      <div class="anim-up d4">
+        <div class="risk-badge">
+          <div class="risk-dot"></div>
+          Medium-High Manipulation Risk
+        </div>
+      </div>
+      <div class="cover-meta anim-up d5">
+        <div class="cover-meta-item">
+          <div class="cover-meta-label">Period</div>
+          <div class="cover-meta-value">FY 2021–2025</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cover-meta-label">Auditor</div>
+          <div class="cover-meta-value">KPMG / IFRS</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cover-meta-label">Report Date</div>
+          <div class="cover-meta-value">May 1, 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: animated stat panel -->
+    <div class="cover-right">
+      <div class="cover-viz-bg"></div>
+      <!-- subtle grid overlay -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.06;" preserveAspectRatio="none">
+        <defs>
+          <pattern id="cgrid" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#14130f" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#cgrid)"/>
+      </svg>
+
+      <div class="cover-stat-cluster anim-in d2">
+        <div class="cover-big-stat">
+          <div class="cover-big-num anim-up d3" style="color:var(--ink);">880.9<span style="font-size:40px;font-weight:500;color:var(--ink-muted);">B</span></div>
+          <div class="cover-big-label">Revenue 2025 (CNY)</div>
+        </div>
+        <div class="cover-big-stat">
+          <div class="cover-big-num anim-up d4" style="color:oklch(38% 0.19 25);">−29.8<span style="font-size:40px;font-weight:500;">%</span></div>
+          <div class="cover-big-label">Op→Net Profit Gap (2025)</div>
+        </div>
+        <div class="cover-big-stat">
+          <div class="cover-big-num anim-up d5" style="color:oklch(38% 0.15 155);">127.4<span style="font-size:40px;font-weight:500;color:var(--ink-muted);">B</span></div>
+          <div class="cover-big-label">Operating Cash Flow (CNY)</div>
+        </div>
+        <div class="cover-big-stat">
+          <div class="cover-big-num anim-up d6" style="color:oklch(42% 0.17 68);">192.3<span style="font-size:40px;font-weight:500;color:var(--ink-muted);">B</span></div>
+          <div class="cover-big-label">R&amp;D Spending (CNY · 21.8% rev)</div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /cover-inner -->
+  </section>
+
+  <!-- ══ SLIDE 2: EXECUTIVE SUMMARY ══ -->
+  <section data-screen-label="02 Executive Summary" id="s2">
+    <div class="cover-top-bar"></div>
+    <div class="slide-header" style="padding-top:60px;">
+      <div>
+        <div class="slide-eyebrow anim-in d1">Executive Summary</div>
+        <div class="slide-title anim-up d2">The Headline vs. The Reality</div>
+      </div>
+      <div class="slide-num anim-in d1">02 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:190px;">
+      <div class="exec-grid">
+        <!-- left: key stats -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="exec-card amber anim-scale d2">
+            <div class="exec-card-label">2023 Headline Net Profit</div>
+            <div class="exec-card-big amber">CNY 86.95B</div>
+            <div class="exec-card-desc">CNY 55.3B (64%) came from one-time gains on Honor &amp; xFusion divestitures. Normalized profit: ~CNY 31.6B.</div>
+          </div>
+          <div class="exec-card red anim-scale d3">
+            <div class="exec-card-label">Operating → Net Profit Gap (2025)</div>
+            <div class="exec-card-big red">CNY 28.9B</div>
+            <div class="exec-card-desc">29.8% of operating profit never reaches net — the widest gap in five years. Composition undisclosed.</div>
+          </div>
+          <div class="exec-card green anim-scale d4">
+            <div class="exec-card-label">2025 Operating Cash Flow</div>
+            <div class="exec-card-big green">CNY 127.4B</div>
+            <div class="exec-card-desc">Five-year high. De-leveraging is real. Underlying business may be improving.</div>
+          </div>
+        </div>
+
+        <!-- right: key findings -->
+        <div class="exec-right">
+          <div class="finding-row flag-red anim-left d2">
+            <div class="finding-icon red">🚩</div>
+            <div class="finding-text">
+              <strong>Cloud revenue restated 3 years in a row</strong>
+              <span>Over CNY 25B silently reclassified. No formal restatement notice issued.</span>
+            </div>
+          </div>
+          <div class="finding-row flag-red anim-left d3">
+            <div class="finding-icon red">🚩</div>
+            <div class="finding-text">
+              <strong>"Other" segment −76.4% collapse</strong>
+              <span>CNY 22.6B single-year decline with no management explanation.</span>
+            </div>
+          </div>
+          <div class="finding-row flag-amber anim-left d4">
+            <div class="finding-icon amber">⚠</div>
+            <div class="finding-text">
+              <strong>R&amp;D capitalization undisclosed</strong>
+              <span>CNY 192.3B in R&amp;D. IFRS IAS 38 split not publicly quantified.</span>
+            </div>
+          </div>
+          <div class="finding-row flag-amber anim-left d5">
+            <div class="finding-icon amber">⚠</div>
+            <div class="finding-text">
+              <strong>Q4 2024 implied net loss (~−CNY 326M)</strong>
+              <span>Inconsistent with seasonal strength. Likely Q4 provisions to clean 2025 base.</span>
+            </div>
+          </div>
+          <div class="finding-row flag-green anim-left d6">
+            <div class="finding-icon green">✓</div>
+            <div class="finding-text">
+              <strong>Genuine debt reduction underway</strong>
+              <span>Total borrowings fell CNY 308.4B → CNY 239.3B (2023–2025). Three consecutive years.</span>
+            </div>
+          </div>
+          <div class="finding-row flag-green anim-left d7">
+            <div class="finding-icon green">✓</div>
+            <div class="finding-text">
+              <strong>Automotive (IAS) first-time profitable</strong>
+              <span>+72.1% revenue growth to CNY 45B. Genuine growth story.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 3: REVENUE OVERVIEW ══ -->
+  <section data-screen-label="03 Revenue Overview" id="s3">
+    <div class="slide-header">
+      <div>
+        <div class="slide-eyebrow anim-in d1">Five-Year Financials</div>
+        <div class="slide-title anim-up d2">Revenue Recovery<br>Masks Profit Volatility</div>
+      </div>
+      <div class="slide-num anim-in d1">03 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:200px;">
+      <!-- stat row -->
+      <div style="display:flex; gap:32px; margin-bottom:32px;">
+        <div class="anim-scale d2" style="background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:20px 28px; flex:1;">
+          <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;">2025 Revenue</div>
+          <div style="font-size:40px;font-weight:700;letter-spacing:-0.02em;font-family:'DM Mono',monospace;">CNY 880.9B</div>
+          <div style="font-size:15px;color:var(--ink-muted);margin-top:4px;">+2.2% YoY — near 2020 all-time peak</div>
+        </div>
+        <div class="anim-scale d3" style="background:oklch(52% 0.19 25 / 0.06); border:1px solid oklch(52% 0.19 25 / 0.25); border-radius:10px; padding:20px 28px; flex:1;">
+          <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;">Op. Margin Range</div>
+          <div style="font-size:40px;font-weight:700;letter-spacing:-0.02em;font-family:'DM Mono',monospace;color:oklch(42% 0.19 25);">6.6–19.1%</div>
+          <div style="font-size:15px;color:var(--ink-muted);margin-top:4px;">Extreme volatility vs. peer range 3–10%</div>
+        </div>
+        <div class="anim-scale d4" style="background:oklch(58% 0.15 155 / 0.06); border:1px solid oklch(58% 0.15 155 / 0.25); border-radius:10px; padding:20px 28px; flex:1;">
+          <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;">OCF 2025</div>
+          <div style="font-size:40px;font-weight:700;letter-spacing:-0.02em;font-family:'DM Mono',monospace;color:oklch(38% 0.15 155);">CNY 127.4B</div>
+          <div style="font-size:15px;color:var(--ink-muted);margin-top:4px;">+44% YoY — five-year high</div>
+        </div>
+      </div>
+
+      <!-- bar chart -->
+      <div class="chart-area anim-in d3">
+        <div class="bar-chart" style="height:420px; position:relative;">
+          <!-- grid lines (drawn via SVG overlay) -->
+          <svg style="position:absolute;inset:0 0 40px 60px;pointer-events:none;overflow:visible;" preserveAspectRatio="none">
+            <line x1="0%" y1="0%" x2="100%" y2="0%" stroke="#e8e5df" stroke-width="1"/>
+            <line x1="0%" y1="25%" x2="100%" y2="25%" stroke="#e8e5df" stroke-width="1"/>
+            <line x1="0%" y1="50%" x2="100%" y2="50%" stroke="#e8e5df" stroke-width="1"/>
+            <line x1="0%" y1="75%" x2="100%" y2="75%" stroke="#e8e5df" stroke-width="1"/>
+            <text x="-8" y="4" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">1000B</text>
+            <text x="-8" y="104" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">750B</text>
+            <text x="-8" y="204" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">500B</text>
+            <text x="-8" y="304" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">250B</text>
+          </svg>
+
+          <!-- 2021: rev 636.8, op 121.4, net 113.7 — scale to 1000B = 380px -->
+          <div class="bar-group" style="align-self:stretch; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:40px;">
+            <div class="bar-wrap">
+              <div class="bar bar-rev d2" style="height:242px;">
+                <span class="bar-value" style="color:var(--ink);">637</span>
+              </div>
+              <div class="bar bar-op d3" style="height:46px;">
+                <span class="bar-value" style="color:var(--accent-amber);">121</span>
+              </div>
+              <div class="bar bar-net d4" style="height:43px;"></div>
+            </div>
+            <div class="bar-year" style="margin-top:12px;">2021</div>
+          </div>
+
+          <!-- 2022: rev 642.3, op 42.2, net 35.6 -->
+          <div class="bar-group" style="align-self:stretch; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:40px;">
+            <div class="bar-wrap">
+              <div class="bar bar-rev d3" style="height:244px;"></div>
+              <div class="bar bar-op d4" style="height:16px; background:var(--accent-amber);">
+                <span class="bar-value" style="color:var(--accent-amber);">42</span>
+              </div>
+              <div class="bar bar-net d5" style="height:13px;"></div>
+            </div>
+            <div class="bar-year" style="margin-top:12px;">2022</div>
+          </div>
+
+          <!-- 2023: rev 704.2, op 104.4, net 87.0 -->
+          <div class="bar-group" style="align-self:stretch; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:40px;">
+            <div class="bar-wrap">
+              <div class="bar bar-rev d4" style="height:268px;"></div>
+              <div class="bar bar-op d5" style="height:40px;">
+                <span class="bar-value" style="color:var(--accent-amber);">104</span>
+              </div>
+              <div class="bar bar-net d6" style="height:33px;"></div>
+            </div>
+            <div class="bar-year" style="margin-top:12px;">2023</div>
+          </div>
+
+          <!-- 2024: rev 862.1, op 79.4, net 62.6 -->
+          <div class="bar-group" style="align-self:stretch; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:40px;">
+            <div class="bar-wrap">
+              <div class="bar bar-rev d5" style="height:328px;"></div>
+              <div class="bar bar-op d6" style="height:30px;">
+                <span class="bar-value" style="color:var(--accent-amber);">79</span>
+              </div>
+              <div class="bar bar-net d7" style="height:24px;"></div>
+            </div>
+            <div class="bar-year" style="margin-top:12px;">2024</div>
+          </div>
+
+          <!-- 2025: rev 880.9, op 96.9, net 68.0 -->
+          <div class="bar-group" style="align-self:stretch; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:40px;">
+            <div class="bar-wrap">
+              <div class="bar bar-rev d6" style="height:335px;"></div>
+              <div class="bar bar-op d7" style="height:37px;">
+                <span class="bar-value" style="color:var(--accent-amber);">97</span>
+              </div>
+              <div class="bar bar-net d8" style="height:26px;"></div>
+            </div>
+            <div class="bar-year" style="margin-top:12px;">2025</div>
+          </div>
+        </div>
+
+        <div class="chart-legend anim-in d5" style="padding-left:60px;">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--ink);"></div>Revenue (CNY B)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent-amber);"></div>Operating Profit</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent-red);"></div>Net Profit</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 4: PROFIT GAP ══ -->
+  <section data-screen-label="04 Profit Gap" id="s4">
+    <div class="slide-header">
+      <div>
+        <div class="slide-eyebrow anim-in d1">Earnings Quality</div>
+        <div class="slide-title anim-up d2">The Widening<br>Profit Gap</div>
+      </div>
+      <div class="slide-num anim-in d1">04 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:200px;">
+      <!-- paired bar chart: op vs net profit with gap % labels -->
+      <div class="chart-area anim-in d2" style="flex-direction:row; gap:48px;">
+        <div style="flex:1.4; display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:flex-end; gap:24px; height:440px; padding-bottom:40px; padding-left:60px; position:relative;">
+            <!-- grid -->
+            <svg style="position:absolute;inset:0 0 40px 60px;pointer-events:none;overflow:visible;" preserveAspectRatio="none">
+              <line x1="0%" y1="0%" x2="100%" y2="0%" stroke="#e8e5df" stroke-width="1"/>
+              <line x1="0%" y1="33%" x2="100%" y2="33%" stroke="#e8e5df" stroke-width="1"/>
+              <line x1="0%" y1="66%" x2="100%" y2="66%" stroke="#e8e5df" stroke-width="1"/>
+              <text x="-8" y="4" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">150B</text>
+              <text x="-8" y="148" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">100B</text>
+              <text x="-8" y="292" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">50B</text>
+            </svg>
+
+            <!-- 2021: op 121.4, net 113.7, gap 6.3% — scale 150B=400px, so 1B≈2.67px -->
+            <div class="gap-year-col">
+              <div class="gap-bars">
+                <div class="gap-bar-op d2" style="height:324px;">
+                  <span class="bar-value" style="color:var(--ink);">121</span>
+                </div>
+                <div class="gap-bar-net d3" style="height:303px;">
+                  <span class="bar-value" style="color:var(--accent-amber);">114</span>
+                </div>
+                <div class="gap-pct-badge" style="background:var(--ink-faint);">6.3%</div>
+              </div>
+              <div class="gap-year-label">2021</div>
+            </div>
+
+            <!-- 2022: op 42.2, net 35.6, gap 15.8% -->
+            <div class="gap-year-col">
+              <div class="gap-bars">
+                <div class="gap-bar-op d3" style="height:113px;">
+                  <span class="bar-value" style="color:var(--ink);">42</span>
+                </div>
+                <div class="gap-bar-net d4" style="height:95px;">
+                  <span class="bar-value" style="color:var(--accent-amber);">36</span>
+                </div>
+                <div class="gap-pct-badge">15.8%</div>
+              </div>
+              <div class="gap-year-label">2022</div>
+            </div>
+
+            <!-- 2023: op 104.4, net 87.0, gap 16.7% -->
+            <div class="gap-year-col">
+              <div class="gap-bars">
+                <div class="gap-bar-op d4" style="height:279px;"></div>
+                <div class="gap-bar-net d5" style="height:232px;"></div>
+                <div class="gap-pct-badge">16.7%</div>
+              </div>
+              <div class="gap-year-label">2023</div>
+            </div>
+
+            <!-- 2024: op 79.4, net 62.6, gap 21.2% -->
+            <div class="gap-year-col">
+              <div class="gap-bars">
+                <div class="gap-bar-op d5" style="height:212px;"></div>
+                <div class="gap-bar-net d6" style="height:167px;"></div>
+                <div class="gap-pct-badge">21.2%</div>
+              </div>
+              <div class="gap-year-label">2024</div>
+            </div>
+
+            <!-- 2025: op 96.9, net 68.0, gap 29.8% -->
+            <div class="gap-year-col">
+              <div class="gap-bars">
+                <div class="gap-bar-op d6" style="height:259px;"></div>
+                <div class="gap-bar-net d7" style="height:181px;"></div>
+                <div class="gap-pct-badge" style="background:oklch(38% 0.19 25); font-size:15px; padding:5px 12px;">29.8%</div>
+              </div>
+              <div class="gap-year-label">2025</div>
+            </div>
+          </div>
+
+          <div class="chart-legend anim-in d5" style="padding-left:60px; margin-top:8px;">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--ink);"></div>Operating Profit</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent-amber);"></div>Net Profit</div>
+            <div class="legend-item"><div class="legend-dot" style="background:oklch(52% 0.19 25); border-radius:50%;"></div>Gap % (growing)</div>
+          </div>
+        </div>
+
+        <div style="flex:1; display:flex; flex-direction:column; gap:20px; justify-content:center;">
+          <div class="insight-box anim-left d3">
+            <div class="insight-icon">📉</div>
+            <div class="insight-text">In 2025, <strong>CNY 28.9B</strong> of operating profit vanished before reaching net income — nearly 30% of the total. No line-item explanation is publicly available.</div>
+          </div>
+          <div class="insight-box anim-left d4" style="background: oklch(68% 0.17 68 / 0.08); border-color: oklch(68% 0.17 68 / 0.25);">
+            <div class="insight-icon">💡</div>
+            <div class="insight-text" style="color:var(--ink);">Likely drivers: interest on <strong>CNY 239B</strong> in remaining debt, minority interest, taxes, and below-the-line charges — but the composition is <strong>opaque</strong>.</div>
+          </div>
+          <div style="background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:24px 28px; display:flex; flex-direction:column; gap:12px;" class="anim-left d5">
+            <div style="font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint);">Peer Context</div>
+            <div style="font-size:16px; color:var(--ink-muted); line-height:1.6;">Ericsson operating margin range: <strong style="color:var(--ink);">3–10%</strong><br>ZTE operating margin range: <strong style="color:var(--ink);">3–7%</strong><br>Huawei peak margin: <strong style="color:oklch(42% 0.19 25);">19.1% in a year revenue fell 29%</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 5: SEGMENTS ══ -->
+  <section data-screen-label="05 Segment Revenue" id="s5">
+    <div class="slide-header">
+      <div>
+        <div class="slide-eyebrow anim-in d1">2025 Segment Revenue</div>
+        <div class="slide-title anim-up d2">Winners, Losers<br>and Anomalies</div>
+      </div>
+      <div class="slide-num anim-in d1">05 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:200px;">
+      <div class="seg-grid">
+        <div class="seg-list">
+          <!-- ICT Infrastructure -->
+          <div class="seg-row anim-up d2">
+            <div class="seg-row-header">
+              <div class="seg-name">ICT Infrastructure</div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="seg-value">CNY 375.0B</div>
+                <div class="seg-yoy up">+2.6%</div>
+              </div>
+            </div>
+            <div class="seg-bar-track"><div class="seg-bar-fill" style="--target-w:100%; width:100%; background:var(--ink);"></div></div>
+          </div>
+
+          <!-- Consumer -->
+          <div class="seg-row anim-up d3">
+            <div class="seg-row-header">
+              <div class="seg-name">Consumer</div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="seg-value">CNY 344.5B</div>
+                <div class="seg-yoy up">+1.6%</div>
+              </div>
+            </div>
+            <div class="seg-bar-track"><div class="seg-bar-fill" style="--target-w:91.9%; width:91.9%; background:#555250;"></div></div>
+          </div>
+
+          <!-- Digital Power -->
+          <div class="seg-row anim-up d4">
+            <div class="seg-row-header">
+              <div class="seg-name">Digital Power</div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="seg-value">CNY 77.3B</div>
+                <div class="seg-yoy up">+12.7%</div>
+              </div>
+            </div>
+            <div class="seg-bar-track"><div class="seg-bar-fill" style="--target-w:20.6%; width:20.6%; background:oklch(55% 0.16 240);"></div></div>
+          </div>
+
+          <!-- IAS -->
+          <div class="seg-row anim-up d5">
+            <div class="seg-row-header">
+              <div class="seg-name">Intelligent Automotive (IAS)</div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="seg-value">CNY 45.0B</div>
+                <div class="seg-yoy up">+72.1%</div>
+              </div>
+            </div>
+            <div class="seg-bar-track"><div class="seg-bar-fill" style="--target-w:12.0%; width:12.0%; background:oklch(58% 0.15 155);"></div></div>
+          </div>
+
+          <!-- Cloud -->
+          <div class="seg-row anim-up d6">
+            <div class="seg-row-header">
+              <div class="seg-name">Cloud Computing</div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="seg-value">CNY 32.2B</div>
+                <div class="seg-yoy down">−3.5%</div>
+              </div>
+            </div>
+            <div class="seg-bar-track"><div class="seg-bar-fill" style="--target-w:8.6%; width:8.6%; background:oklch(52% 0.19 25);"></div></div>
+          </div>
+
+          <!-- Other -->
+          <div class="seg-row anim-up d7">
+            <div class="seg-row-header">
+              <div class="seg-name">Other ⚠</div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="seg-value">CNY 7.0B</div>
+                <div class="seg-yoy down">−76.4%</div>
+              </div>
+            </div>
+            <div class="seg-bar-track"><div class="seg-bar-fill" style="--target-w:1.9%; width:1.9%; background:oklch(52% 0.19 25);"></div></div>
+          </div>
+        </div>
+
+        <!-- right: summary cards -->
+        <div class="seg-summary-cards">
+          <div class="seg-sum-card highlight anim-scale d3">
+            <div class="seg-sum-left">
+              <div class="seg-sum-label">Total Revenue 2025</div>
+              <div class="seg-sum-value">880.9B</div>
+              <div style="font-size:16px;color:#4a4843;margin-top:4px;">CNY • +2.2% YoY</div>
+            </div>
+            <div class="seg-sum-badge" style="background:rgba(240,168,64,0.15);color:var(--accent-amber);">+2.2%</div>
+          </div>
+          <div class="seg-sum-card anim-scale d4">
+            <div class="seg-sum-left">
+              <div class="seg-sum-label">Fastest Growing</div>
+              <div class="seg-sum-value" style="color:oklch(38% 0.15 155);">IAS</div>
+              <div style="font-size:16px;color:var(--ink-muted);margin-top:4px;">Automotive — first-time profit</div>
+            </div>
+            <div class="seg-sum-badge boom">+72.1%</div>
+          </div>
+          <div class="seg-sum-card anim-scale d5" style="border-color: oklch(52% 0.19 25 / 0.3); background: oklch(52% 0.19 25 / 0.04);">
+            <div class="seg-sum-left">
+              <div class="seg-sum-label">Biggest Red Flag</div>
+              <div class="seg-sum-value" style="color:oklch(42% 0.19 25);">Other</div>
+              <div style="font-size:16px;color:var(--ink-muted);margin-top:4px;">No explanation for collapse</div>
+            </div>
+            <div class="seg-sum-badge warn">−76.4%</div>
+          </div>
+          <div class="seg-sum-card anim-scale d6" style="border-color: oklch(52% 0.19 25 / 0.3); background: oklch(52% 0.19 25 / 0.04);">
+            <div class="seg-sum-left">
+              <div class="seg-sum-label">Cloud vs. Alibaba</div>
+              <div class="seg-sum-value" style="color:oklch(42% 0.19 25);">−3.5%</div>
+              <div style="font-size:16px;color:var(--ink-muted);margin-top:4px;">Alibaba Cloud grew +36% to CNY 43.3B</div>
+            </div>
+            <div class="seg-sum-badge warn">Losing share</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 6: CLOUD RED FLAG ══ -->
+  <section data-screen-label="06 Cloud Restatements" id="s6">
+    <div class="slide-header">
+      <div>
+        <div class="slide-eyebrow anim-in d1" style="color:oklch(52% 0.19 25);">🚩 Red Flag #1</div>
+        <div class="slide-title anim-up d2">Three Consecutive Years<br>of Silent Cloud Restatements</div>
+      </div>
+      <div class="slide-num anim-in d1">06 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:200px;">
+      <div class="cloud-timeline anim-in d2">
+        <!-- Row: reported vs restated each year -->
+        <div style="display:flex; flex-direction:column; gap:20px; flex:1; justify-content:center;">
+
+          <div class="timeline-row anim-up d2">
+            <div class="timeline-year">2023 AR</div>
+            <div style="width:20px;height:20px;border-radius:50%;background:oklch(52% 0.19 25);z-index:1;flex-shrink:0;"></div>
+            <div class="timeline-card flagged" style="margin-left:24px;">
+              <div style="flex:1;">
+                <div class="timeline-card-label">2023 Cloud Revenue — press release vs. 2024 Annual Report restatement</div>
+                <div style="font-size:14px;color:var(--ink-muted);margin-top:4px;">Silent downward revision. No formal notice issued.</div>
+              </div>
+              <div class="timeline-nums">
+                <div class="timeline-original">CNY 55.3B</div>
+                <div class="timeline-arrow">→</div>
+                <div class="timeline-restated">CNY 35.5B</div>
+                <div class="timeline-delta">−CNY 19.8B / −35.8%</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="width:2px;height:24px;background:var(--border);margin-left:129px;"></div>
+
+          <div class="timeline-row anim-up d3">
+            <div class="timeline-year">2024 AR</div>
+            <div style="width:20px;height:20px;border-radius:50%;background:oklch(52% 0.19 25);z-index:1;flex-shrink:0;"></div>
+            <div class="timeline-card flagged" style="margin-left:24px;">
+              <div style="flex:1;">
+                <div class="timeline-card-label">2024 Cloud Revenue — 2024 AR report vs. 2025 Annual Report restatement</div>
+                <div style="font-size:14px;color:var(--ink-muted);margin-top:4px;">Second consecutive silent revision in the same segment.</div>
+              </div>
+              <div class="timeline-nums">
+                <div class="timeline-original">CNY 38.5B</div>
+                <div class="timeline-arrow">→</div>
+                <div class="timeline-restated">CNY 33.3B</div>
+                <div class="timeline-delta">−CNY 5.2B / −13.5%</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="width:2px;height:24px;background:var(--border);margin-left:129px;"></div>
+
+          <div class="timeline-row anim-up d4">
+            <div class="timeline-year">2025 AR</div>
+            <div style="width:20px;height:20px;border-radius:50%;background:oklch(68% 0.17 68);z-index:1;flex-shrink:0;"></div>
+            <div class="timeline-card" style="border-color:oklch(68% 0.17 68 / 0.35);background:oklch(68% 0.17 68 / 0.04);margin-left:24px;">
+              <div style="flex:1;">
+                <div class="timeline-card-label">2025 Cloud as reported — but 55% is internal transfer revenue</div>
+                <div style="font-size:14px;color:var(--ink-muted);margin-top:4px;">Total cloud "incl. cross-segment" = CNY 72.1B. Only CNY 32.2B is external.</div>
+              </div>
+              <div class="timeline-nums">
+                <div style="font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:oklch(52% 0.17 68);">CNY 32.2B ext.</div>
+                <div class="timeline-arrow" style="color:oklch(52% 0.17 68);">vs.</div>
+                <div style="font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:var(--ink);">CNY 72.1B total</div>
+                <div style="font-size:14px;font-weight:700;padding:4px 10px;background:oklch(68% 0.17 68 / 0.15);color:oklch(42% 0.17 68);border-radius:6px;">55% internal</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cloud-stat-row anim-up d5">
+          <div class="cloud-stat-card danger">
+            <div class="cloud-stat-label">Total silently reclassified</div>
+            <div class="cloud-stat-value" style="color:oklch(42% 0.19 25);">CNY 25B+</div>
+            <div class="cloud-stat-desc">Across three years. No restatement notices. Historical trend analysis is unreliable.</div>
+          </div>
+          <div class="cloud-stat-card danger">
+            <div class="cloud-stat-label">Alibaba Cloud growth (2025)</div>
+            <div class="cloud-stat-value" style="color:oklch(42% 0.19 25);">+36%</div>
+            <div class="cloud-stat-desc">CNY 43.3B external revenue. Now larger than Huawei Cloud externally by trajectory.</div>
+          </div>
+          <div class="cloud-stat-card">
+            <div class="cloud-stat-label">Huawei Cloud external (2025)</div>
+            <div class="cloud-stat-value" style="color:var(--ink);">−3.5%</div>
+            <div class="cloud-stat-desc">External market share declining. Competitive position deteriorating vs. Alibaba and ByteDance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 7: OTHER ANOMALY ══ -->
+  <section data-screen-label="07 Other Segment Anomaly" id="s7">
+    <div class="slide-header">
+      <div>
+        <div class="slide-eyebrow anim-in d1" style="color:oklch(52% 0.19 25);">🚩 Red Flag #2</div>
+        <div class="slide-title anim-up d2">"Other" Segment:<br>A CNY 22.6B Unexplained Collapse</div>
+      </div>
+      <div class="slide-num anim-in d1">07 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:200px;">
+      <div class="anomaly-layout">
+        <div class="anomaly-chart-wrap anim-scale d2">
+          <div class="anomaly-bar-chart" style="padding-left:60px; gap:48px;">
+            <!-- grid -->
+            <svg style="position:absolute;inset:0 0 40px 60px;pointer-events:none;overflow:visible;" preserveAspectRatio="none">
+              <line x1="0%" y1="0%" x2="100%" y2="0%" stroke="#e8e5df" stroke-width="1"/>
+              <line x1="0%" y1="33%" x2="100%" y2="33%" stroke="#e8e5df" stroke-width="1"/>
+              <line x1="0%" y1="66%" x2="100%" y2="66%" stroke="#e8e5df" stroke-width="1"/>
+              <text x="-8" y="4" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">30B</text>
+              <text x="-8" y="142" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">20B</text>
+              <text x="-8" y="280" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">10B</text>
+            </svg>
+
+            <!-- 2023: 10.95B — scale 30B=380px, 1B=12.67px -->
+            <div class="anomaly-bar-col" style="position:relative;">
+              <div class="anomaly-bar d3" style="height:139px; background:var(--ink-faint);">
+                <span class="anomaly-bar-val" style="color:var(--ink-muted);">10.9B</span>
+              </div>
+              <span class="anomaly-bar-lbl">2023</span>
+            </div>
+
+            <!-- 2024 originally reported: 19.6B -->
+            <div class="anomaly-bar-col" style="position:relative;">
+              <div class="anomaly-bar d4" style="height:248px; background:var(--ink-muted); opacity:0.5;">
+                <span class="anomaly-bar-val" style="color:var(--ink-muted);">19.6B</span>
+              </div>
+              <span class="anomaly-bar-lbl" style="color:var(--ink-faint);">2024 orig.</span>
+            </div>
+
+            <!-- 2024 restated: 29.6B -->
+            <div class="anomaly-bar-col" style="position:relative;">
+              <div class="anomaly-bar d5" style="height:375px; background:oklch(68% 0.17 68);">
+                <span class="anomaly-bar-val" style="color:oklch(42% 0.17 68);">29.6B</span>
+              </div>
+              <span class="anomaly-bar-lbl">2024 restated</span>
+            </div>
+
+            <!-- 2025: 6.96B — collapse -->
+            <div class="anomaly-bar-col" style="position:relative;">
+              <div class="anomaly-bar d6" style="height:88px; background:oklch(52% 0.19 25);">
+                <span class="anomaly-bar-val" style="color:oklch(42% 0.19 25);">7.0B</span>
+              </div>
+              <span class="anomaly-bar-lbl">2025</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="anomaly-notes">
+          <div class="anomaly-note anim-left d2">
+            <div class="anomaly-note-num">01</div>
+            <div class="anomaly-note-text">
+              <strong>Silent upward restatement of 2024 comparative</strong>
+              <p>The 2025 annual report restated 2024 "Other" from CNY 19.6B → CNY 29.6B — a +CNY 10B upward revision before the collapse.</p>
+            </div>
+          </div>
+          <div class="anomaly-note red anim-left d3">
+            <div class="anomaly-note-num" style="color:oklch(52% 0.19 25);">02</div>
+            <div class="anomaly-note-text">
+              <strong>−76.4% collapse with zero management commentary</strong>
+              <p>From CNY 29.6B to CNY 7.0B in a single year. No explanation offered in the public annual report.</p>
+            </div>
+          </div>
+          <div class="anomaly-note anim-left d4">
+            <div class="anomaly-note-num">03</div>
+            <div class="anomaly-note-text">
+              <strong>Most likely candidates</strong>
+              <p>Conclusion of one-time patent licensing deals — Huawei signed 260+ licensing agreements. Closure of divested businesses. Intercompany revenue eliminations.</p>
+            </div>
+          </div>
+          <div class="anomaly-note anim-left d5">
+            <div class="anomaly-note-num">04</div>
+            <div class="anomaly-note-text">
+              <strong>Paradoxical operating margin effect</strong>
+              <p>Eliminating a near-zero or negative margin "Other" segment partially explains the 2025 operating margin improvement — without any genuine cost efficiency.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 8: BALANCE SHEET ══ -->
+  <section data-screen-label="08 Balance Sheet" id="s8">
+    <div class="slide-header">
+      <div>
+        <div class="slide-eyebrow anim-in d1">Balance Sheet</div>
+        <div class="slide-title anim-up d2">Cash Declining Despite<br>Record Operating Cash Flow</div>
+      </div>
+      <div class="slide-num anim-in d1">08 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:200px;">
+      <div class="bs-grid">
+        <div class="bs-chart-wrap anim-in d2">
+          <!-- SVG line chart: cash/borrowings 2021-2025 -->
+          <svg viewBox="0 0 760 420" style="width:100%;flex:1;" preserveAspectRatio="xMidYMid meet">
+            <!-- axes -->
+            <line x1="60" y1="20" x2="60" y2="380" stroke="#e8e5df" stroke-width="1.5"/>
+            <line x1="60" y1="380" x2="740" y2="380" stroke="#e8e5df" stroke-width="1.5"/>
+
+            <!-- grid lines -->
+            <line x1="60" y1="380" x2="740" y2="380" stroke="#e8e5df" stroke-width="1"/>
+            <line x1="60" y1="284" x2="740" y2="284" stroke="#e8e5df" stroke-width="1"/>
+            <line x1="60" y1="188" x2="740" y2="188" stroke="#e8e5df" stroke-width="1"/>
+            <line x1="60" y1="92" x2="740" y2="92" stroke="#e8e5df" stroke-width="1"/>
+
+            <!-- y labels -->
+            <text x="50" y="384" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">0</text>
+            <text x="50" y="288" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">200B</text>
+            <text x="50" y="192" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">400B</text>
+            <text x="50" y="96" text-anchor="end" font-size="13" fill="#b8b5ae" font-family="DM Mono">600B</text>
+
+            <!-- x labels 2021-2025 -->
+            <text x="137" y="400" text-anchor="middle" font-size="14" fill="#6b6760" font-family="DM Sans" font-weight="600">2021</text>
+            <text x="254" y="400" text-anchor="middle" font-size="14" fill="#6b6760" font-family="DM Sans" font-weight="600">2022</text>
+            <text x="371" y="400" text-anchor="middle" font-size="14" fill="#6b6760" font-family="DM Sans" font-weight="600">2023</text>
+            <text x="488" y="400" text-anchor="middle" font-size="14" fill="#6b6760" font-family="DM Sans" font-weight="600">2024</text>
+            <text x="605" y="400" text-anchor="middle" font-size="14" fill="#6b6760" font-family="DM Sans" font-weight="600">2025</text>
+
+            <!-- scale: max 600B = 360px height → 1B = 0.6px
+                 cash: 416.3, 373.5, 475.3, 372.2, 361.4
+                 y = 380 - val*0.6
+                 2021: 380-250=130; 2022:380-224=156; 2023:380-285=95; 2024:380-223=157; 2025:380-217=163 -->
+            <!-- Cash line (blue) -->
+            <polyline
+              points="137,130 254,156 371,95 488,157 605,163"
+              fill="none" stroke="oklch(55% 0.16 240)" stroke-width="3"
+              stroke-dasharray="1000" stroke-dashoffset="1000"
+              class="bs-line">
+            </polyline>
+            <!-- Cash dots -->
+            <circle cx="137" cy="130" r="5" fill="oklch(55% 0.16 240)" class="bs-dot" style="opacity:0"/>
+            <circle cx="254" cy="156" r="5" fill="oklch(55% 0.16 240)" class="bs-dot" style="opacity:0"/>
+            <circle cx="371" cy="95" r="5" fill="oklch(55% 0.16 240)" class="bs-dot" style="opacity:0"/>
+            <circle cx="488" cy="157" r="5" fill="oklch(55% 0.16 240)" class="bs-dot" style="opacity:0"/>
+            <circle cx="605" cy="163" r="5" fill="oklch(55% 0.16 240)" class="bs-dot" style="opacity:0"/>
+
+            <!-- Borrowings -->
+            <polyline
+              points="137,275 254,262 371,195 488,221 605,236"
+              fill="none" stroke="oklch(52% 0.19 25)" stroke-width="3"
+              stroke-dasharray="1000" stroke-dashoffset="1000"
+              class="bs-line">
+            </polyline>
+            <circle cx="137" cy="275" r="5" fill="oklch(52% 0.19 25)" class="bs-dot" style="opacity:0"/>
+            <circle cx="254" cy="262" r="5" fill="oklch(52% 0.19 25)" class="bs-dot" style="opacity:0"/>
+            <circle cx="371" cy="195" r="5" fill="oklch(52% 0.19 25)" class="bs-dot" style="opacity:0"/>
+            <circle cx="488" cy="221" r="5" fill="oklch(52% 0.19 25)" class="bs-dot" style="opacity:0"/>
+            <circle cx="605" cy="236" r="5" fill="oklch(52% 0.19 25)" class="bs-dot" style="opacity:0"/>
+
+            <!-- OCF bars -->
+            <rect x="117" y="344" width="40" height="36" fill="oklch(58% 0.15 155)" opacity="0.7" rx="3" class="bs-bar" data-delay="0.4"/>
+            <rect x="234" y="369" width="40" height="11" fill="oklch(58% 0.15 155)" opacity="0.7" rx="3" class="bs-bar" data-delay="0.5"/>
+            <rect x="351" y="338" width="40" height="42" fill="oklch(58% 0.15 155)" opacity="0.7" rx="3" class="bs-bar" data-delay="0.6"/>
+            <rect x="468" y="327" width="40" height="53" fill="oklch(58% 0.15 155)" opacity="0.7" rx="3" class="bs-bar" data-delay="0.7"/>
+            <rect x="585" y="304" width="40" height="76" fill="oklch(58% 0.15 155)" opacity="0.7" rx="3" class="bs-bar" data-delay="0.8"/>
+
+            <!-- legend in chart -->
+            <rect x="68" y="24" width="12" height="4" fill="oklch(55% 0.16 240)" rx="2"/>
+            <text x="86" y="30" font-size="13" fill="#6b6760" font-family="DM Sans">Cash &amp; ST Investments</text>
+            <rect x="68" y="42" width="12" height="4" fill="oklch(52% 0.19 25)" rx="2"/>
+            <text x="86" y="48" font-size="13" fill="#6b6760" font-family="DM Sans">Total Borrowings</text>
+            <rect x="68" y="60" width="12" height="12" fill="oklch(58% 0.15 155)" rx="2" opacity="0.7"/>
+            <text x="86" y="70" font-size="13" fill="#6b6760" font-family="DM Sans">Operating Cash Flow</text>
+          </svg>
+        </div>
+
+        <div class="bs-stats">
+          <div class="bs-stat-row anim-left d3">
+            <div class="bs-stat-label">Cash decline (2023 → 2025)</div>
+            <div class="bs-stat-value" style="color:oklch(42% 0.19 25);">−CNY 113.9B</div>
+            <div class="bs-stat-note">Despite CNY 215.8B in cumulative OCF. Implied investing outflows ~CNY 330B — not publicly itemized.</div>
+          </div>
+          <div class="bs-stat-row anim-left d4">
+            <div class="bs-stat-label">Borrowings reduction (2023→2025)</div>
+            <div class="bs-stat-value" style="color:oklch(38% 0.15 155);">−CNY 69.1B</div>
+            <div class="bs-stat-note">Three consecutive years of de-leveraging after the 2023 spike. Liability ratio now 55.0%.</div>
+          </div>
+          <div class="bs-stat-row anim-left d5">
+            <div class="bs-stat-label">Total Assets (2025)</div>
+            <div class="bs-stat-value" style="color:var(--ink);">CNY 1,334.9B</div>
+            <div class="bs-stat-note">+CNY 44.8B YoY. With CNY 192B R&D and substantial capex, implies significant asset disposals or impairments.</div>
+          </div>
+          <div class="bs-stat-row anim-left d6">
+            <div class="bs-stat-label">Equity (2025)</div>
+            <div class="bs-stat-value" style="color:var(--ink);">CNY 600.1B</div>
+            <div class="bs-stat-note">Steady accumulation. +10.2% YoY. Liability ratio declining every year since 2023 peak.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 9: RATIO DASHBOARD ══ -->
+  <section data-screen-label="09 Ratio Dashboard" id="s9">
+    <div class="slide-header">
+      <div>
+        <div class="slide-eyebrow anim-in d1">Key Metrics</div>
+        <div class="slide-title anim-up d2">Ratio Dashboard — 2025</div>
+      </div>
+      <div class="slide-num anim-in d1">09 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:200px;">
+      <div class="ratio-grid">
+        <div class="ratio-card alert anim-scale d2">
+          <div class="ratio-label">Operating Margin</div>
+          <div class="ratio-value amber">11.0%</div>
+          <div class="ratio-trend">Range 2021–2025: 6.6% – 19.1%. No peer operates in this range. Ericsson: 3–10%.</div>
+          <div class="ratio-flag amber">Extreme Volatility</div>
+        </div>
+        <div class="ratio-card alert anim-scale d3">
+          <div class="ratio-label">Net / Operating Profit</div>
+          <div class="ratio-value red">70.2%</div>
+          <div class="ratio-trend">Lowest in five years. CNY 28.9B gap undisclosed. 2021: 93.6% → 2025: 70.2%.</div>
+          <div class="ratio-flag red">Widening Gap</div>
+        </div>
+        <div class="ratio-card good anim-scale d4">
+          <div class="ratio-label">OCF / Revenue</div>
+          <div class="ratio-value green">14.5%</div>
+          <div class="ratio-trend">Five-year high. From 2.8% (2022) to 14.5% (2025). +44% growth vs. +2.2% revenue. Unexplained spike.</div>
+          <div class="ratio-flag green">Improving (monitor)</div>
+        </div>
+        <div class="ratio-card alert anim-scale d3">
+          <div class="ratio-label">Cash / Revenue</div>
+          <div class="ratio-value amber">41.0%</div>
+          <div class="ratio-trend">Down from 67.5% in 2023. CNY 330B investing outflows over 2 years. Destination unitemized.</div>
+          <div class="ratio-flag amber">Declining Trend</div>
+        </div>
+        <div class="ratio-card good anim-scale d4">
+          <div class="ratio-label">Liability Ratio</div>
+          <div class="ratio-value green">55.0%</div>
+          <div class="ratio-trend">From 59.8% peak (2023) to 55.0% (2025). Genuine de-leveraging confirmed over three years.</div>
+          <div class="ratio-flag green">Improving</div>
+        </div>
+        <div class="ratio-card alert anim-scale d5">
+          <div class="ratio-label">R&D Intensity</div>
+          <div class="ratio-value dark">21.8%</div>
+          <div class="ratio-trend">2–3× industry norm. CNY 192.3B. IAS 38 capitalization unknown. Cumulative 10-yr: CNY 1.38 trillion.</div>
+          <div class="ratio-flag amber">IAS 38 Gap</div>
+        </div>
+        <div class="ratio-card anim-scale d4" style="background:var(--card-bg);border:1px solid var(--border);">
+          <div class="ratio-label">Equity Growth</div>
+          <div class="ratio-value dark">+10.2%</div>
+          <div class="ratio-trend">Steady accumulation. CNY 600.1B (2025). 5-yr CAGR ~7.7%. Consistent with retained earnings build.</div>
+          <div class="ratio-flag green">Stable</div>
+        </div>
+        <div class="ratio-card anim-scale d5" style="background:var(--card-bg);border:1px solid var(--border);">
+          <div class="ratio-label">Working Capital</div>
+          <div class="ratio-value amber">CNY 304B</div>
+          <div class="ratio-trend">−CNY 117B over two years despite +25% cumulative revenue growth. AR aging data not disclosed.</div>
+          <div class="ratio-flag amber">Compressing</div>
+        </div>
+        <div class="ratio-card alert anim-scale d6">
+          <div class="ratio-label">China Revenue %</div>
+          <div class="ratio-value dark">70.0%</div>
+          <div class="ratio-trend">Domestic growth: +0.2%. Effectively flat. Americas: CNY 37.2B — negligible given Five Eyes exclusion.</div>
+          <div class="ratio-flag amber">Concentration Risk</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 10: RISK SUMMARY ══ -->
+  <section data-screen-label="10 Risk Summary" id="s10">
+    <div class="cover-top-bar"></div>
+    <div class="slide-header" style="padding-top:60px;">
+      <div>
+        <div class="slide-eyebrow anim-in d1">Conclusion</div>
+        <div class="slide-title anim-up d2">Top 5 Highest-Risk Items</div>
+      </div>
+      <div class="slide-num anim-in d1">10 / 10</div>
+    </div>
+
+    <div class="slide-content" style="padding-top:190px;">
+      <div class="risk-list">
+        <div class="risk-item anim-up d2">
+          <div class="risk-num">01</div>
+          <div class="risk-body">
+            <div>
+              <div class="risk-title-text">Serial Cloud Segment Restatements — Three Consecutive Years</div>
+              <div class="risk-desc">Cloud revenue silently revised downward in every annual report since 2023. No formal notice. Historical cloud trend is unreliable. External share now below Alibaba Cloud's trajectory.</div>
+            </div>
+            <div class="risk-amount">−CNY 25B+</div>
+          </div>
+        </div>
+        <div class="risk-item anim-up d3">
+          <div class="risk-num">02</div>
+          <div class="risk-body">
+            <div>
+              <div class="risk-title-text">"Other" Segment −76.4% Collapse Without Explanation</div>
+              <div class="risk-desc">Restated upward (+CNY 10B), then immediately collapsed to CNY 7B. Consistent with one-time revenues (patent licensing, divestitures) parked in a catch-all and not recurring.</div>
+            </div>
+            <div class="risk-amount">−CNY 22.6B</div>
+          </div>
+        </div>
+        <div class="risk-item anim-up d4">
+          <div class="risk-num">03</div>
+          <div class="risk-body">
+            <div>
+              <div class="risk-title-text">2023 Profit Inflated by CNY 55.3B from Asset Divestitures</div>
+              <div class="risk-desc">Confirmed by Yicai: Honor and xFusion gains account for 64% of 2023 net profit. Normalized net profit ~CNY 31.6B — less than half the headline figure.</div>
+            </div>
+            <div class="risk-amount">CNY 55.3B gain</div>
+          </div>
+        </div>
+        <div class="risk-item amber anim-up d5">
+          <div class="risk-num">04</div>
+          <div class="risk-body">
+            <div>
+              <div class="risk-title-text">R&amp;D Capitalization Unknown Under IFRS IAS 38</div>
+              <div class="risk-desc">CNY 192.3B annual R&amp;D. At 10–15% capitalization, that's CNY 19–29B of potential income statement improvement — unverifiable from public data.</div>
+            </div>
+            <div class="risk-amount">CNY 192.3B</div>
+          </div>
+        </div>
+        <div class="risk-item amber anim-up d6">
+          <div class="risk-num">05</div>
+          <div class="risk-body">
+            <div>
+              <div class="risk-title-text">Widening Operating-to-Net Profit Gap (Now 29.8%)</div>
+              <div class="risk-desc">CNY 28.9B of operating profit lost before reaching net income in 2025 — the widest in five years. Composition (interest, minority interest, taxes, below-line charges) not itemized.</div>
+            </div>
+            <div class="risk-amount">CNY 28.9B</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script>
+(function() {
+  const CSS_ANIM = [
+    '.anim-up', '.anim-in', '.anim-scale', '.anim-left',
+    '.bar', '.gap-bar-op', '.gap-bar-net', '.anomaly-bar', '.seg-bar-fill'
+  ];
+
+  function playSlide(section) {
+    if (!section) return;
+
+    // Remove played, force reflow, re-add to restart CSS animations
+    CSS_ANIM.forEach(sel => {
+      section.querySelectorAll(sel).forEach(el => el.classList.remove('played'));
+    });
+    void section.offsetWidth; // force reflow
+    CSS_ANIM.forEach(sel => {
+      section.querySelectorAll(sel).forEach(el => el.classList.add('played'));
+    });
+
+    // SVG polylines (balance sheet lines)
+    section.querySelectorAll('.bs-line').forEach((el, i) => {
+      el.style.transition = 'none';
+      el.style.strokeDashoffset = '1000';
+      const delay = 300 + i * 200;
+      setTimeout(() => {
+        el.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.22,1,0.36,1)';
+        el.style.strokeDashoffset = '0';
+      }, delay);
+    });
+
+    // SVG dots
+    section.querySelectorAll('.bs-dot').forEach((el, i) => {
+      el.style.transition = 'none';
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.4s ease';
+        el.style.opacity = '1';
+      }, 1300 + i * 80);
+    });
+
+    // SVG OCF bars
+    section.querySelectorAll('.bs-bar').forEach((el) => {
+      const delay = parseFloat(el.getAttribute('data-delay') || '0.4') * 1000;
+      const y = parseFloat(el.getAttribute('y'));
+      const h = parseFloat(el.getAttribute('height'));
+      const bottom = y + h;
+      el.style.transition = 'none';
+      el.setAttribute('transform', `translate(0,${bottom}) scale(1,0) translate(0,${-bottom})`);
+      setTimeout(() => {
+        el.style.transition = 'transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+        el.setAttribute('transform', '');
+      }, delay);
+    });
+  }
+
+  const stage = document.querySelector('deck-stage');
+  if (!stage) return;
+
+  stage.addEventListener('slidechange', e => {
+    if (e.detail && e.detail.slide) playSlide(e.detail.slide);
+  });
+
+  // Init: find the visible slide after component mounts
+  function tryInit() {
+    const slides = [...document.querySelectorAll('deck-stage > section')];
+    if (!slides.length) { setTimeout(tryInit, 100); return; }
+    const visible = slides.find(s => getComputedStyle(s).visibility === 'visible');
+    if (visible) playSlide(visible);
+    else setTimeout(tryInit, 150);
+  }
+  setTimeout(tryInit, 300);
+})();
+</script>
+</body>
+</html>
