@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Danny Tsai</title>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --fg: oklch(18% 0.012 240);
+    --fg-mid: oklch(38% 0.015 235);
+    --fg-soft: oklch(52% 0.012 235);
+    --accent: oklch(48% 0.09 220);
+    --border: oklch(72% 0 0 / 0.35);
+    --glass-row: oklch(99% 0 0 / 0.52);
+    --glass-row-hover: oklch(99% 0 0 / 0.78);
+    --glass-input: oklch(99% 0 0 / 0.58);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: var(--font);
+    color: var(--fg);
+    background: oklch(97% 0 0);
+  }
+
+  canvas#glCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%; height: 100%;
+    display: block;
+  }
+
+  #site {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr 1fr;
+    padding: 52px 64px 48px;
+    gap: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  #hero {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-soft);
+    margin-bottom: 18px;
+    opacity: 0.75;
+  }
+
+  h1 {
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 0.97;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    margin-bottom: 16px;
+    text-wrap: balance;
+  }
+
+  h1 em { font-style: normal; font-weight: 700; }
+
+  .subtitle {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--fg-soft);
+    letter-spacing: 0.01em;
+    margin-bottom: 40px;
+  }
+
+  .specs { display: flex; flex-direction: row; gap: 32px; }
+  .spec { display: flex; flex-direction: column; gap: 3px; }
+  .spec-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--fg-soft); opacity: 0.6;
+  }
+  .spec-value { font-size: 13px; font-weight: 500; color: var(--fg-mid); }
+
+  #works {
+    grid-column: 2; grid-row: 1 / 3;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-end;
+    padding-left: 48px; pointer-events: all;
+  }
+
+  .works-inner { width: 100%; max-width: 380px; }
+
+  .works-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--fg-soft); opacity: 0.6; margin-bottom: 10px;
+  }
+
+  .search-wrap { position: relative; margin-bottom: 10px; }
+
+  .search-icon {
+    position: absolute; left: 14px; top: 50%;
+    transform: translateY(-50%); width: 14px; height: 14px;
+    opacity: 0.35; pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    padding: 12px 16px 12px 38px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--glass-input);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    font-family: var(--font); font-size: 13px; font-weight: 400;
+    color: var(--fg); outline: none;
+    transition: border-color 0.18s, background 0.18s;
+    letter-spacing: 0.01em;
+    caret-color: oklch(18% 0 0);
+  }
+  #search::placeholder { color: var(--fg-soft); opacity: 0.5; }
+  #search:focus {
+    border-color: oklch(62% 0 0 / 0.45);
+    background: oklch(99% 0 0 / 0.75);
+  }
+
+  #project-list {
+    display: flex; flex-direction: column; gap: 6px;
+    max-height: 320px; overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: oklch(72% 0 0 / 0.4) transparent;
+    padding-right: 2px;
+  }
+  #project-list::-webkit-scrollbar { width: 3px; }
+  #project-list::-webkit-scrollbar-thumb { background: oklch(72% 0 0 / 0.4); border-radius: 3px; }
+
+  .proj-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 16px; border-radius: 11px;
+    border: 1px solid var(--border);
+    background: var(--glass-row);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    text-decoration: none; color: var(--fg);
+    transition: background 0.16s, border-color 0.16s, transform 0.14s;
+    cursor: pointer;
+  }
+  .proj-row:hover {
+    background: var(--glass-row-hover);
+    border-color: oklch(65% 0 0 / 0.45);
+    transform: translateX(-3px);
+  }
+  .proj-row.disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .proj-row.hidden { display: none; }
+
+  .proj-left { display: flex; flex-direction: column; gap: 2px; }
+  .proj-name { font-size: 13px; font-weight: 600; letter-spacing: 0.01em; }
+  .proj-desc { font-size: 11px; color: var(--fg-soft); font-weight: 400; }
+
+  .proj-right { display: flex; align-items: center; gap: 8px; }
+  .proj-tag {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); opacity: 0.75;
+  }
+  .proj-arrow {
+    font-size: 12px; color: var(--accent); opacity: 0.5;
+    transition: opacity 0.15s, transform 0.14s;
+  }
+  .proj-row:hover .proj-arrow { opacity: 1; transform: translateX(-2px); }
+
+  #bottom {
+    grid-column: 1 / 3; grid-row: 3;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    pointer-events: all;
+  }
+
+  .email-link {
+    font-size: 12px; color: var(--fg-soft); text-decoration: none;
+    letter-spacing: 0.01em; opacity: 0.7;
+    transition: opacity 0.15s, color 0.15s;
+    border-bottom: 1px solid transparent; padding-bottom: 1px;
+  }
+  .email-link:hover { opacity: 1; color: var(--accent); border-bottom-color: var(--accent); }
+
+  .copyright {
+    font-size: 11px; color: var(--fg-soft); opacity: 0.35;
+    letter-spacing: 0.04em; pointer-events: none;
+  }
+
+  #cursor-hint {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fg); opacity: 0.18; pointer-events: none; z-index: 20;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  #hero  { animation: fadeIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+  #works { animation: fadeIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both; }
+
+  #tweaks-root { position: fixed; bottom: 24px; right: 24px; z-index: 200; }
+</style>
+</head>
+<body>
+
+<canvas id="glCanvas"></canvas>
+
+<div id="site">
+  <div id="hero">
+    <div class="eyebrow">Portfolio</div>
+    <h1>Danny<br><em>Tsai</em></h1>
+    <div class="subtitle">Financial &amp; Economic Analyst</div>
+    <div class="specs">
+      <div class="spec">
+        <div class="spec-label">Specialization</div>
+        <div class="spec-value">Financial Analysis</div>
+      </div>
+      <div class="spec">
+        <div class="spec-label">Domain</div>
+        <div class="spec-value">Economics &amp; Markets</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="works">
+    <div class="works-inner">
+      <div class="works-label">Selected Work</div>
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input id="search" type="text" placeholder="Search projects…" autocomplete="off" spellcheck="false" />
+      </div>
+      <div id="project-list">
+        <a class="proj-row" href="NIO Financial Analysis.html" data-name="NIO Inc. Forensic Financial Analysis EV">
+          <div class="proj-left">
+            <div class="proj-name">NIO Inc.</div>
+            <div class="proj-desc">Forensic Financial Analysis · FY2022–2025</div>
+          </div>
+          <div class="proj-right">
+            <span class="proj-tag">Forensic</span>
+            <span class="proj-arrow">→</span>
+          </div>
+        </a>
+        <a class="proj-row" href="Huawei Financial Analysis.html" data-name="HuaWei Huawei Financial Analysis Technology">
+          <div class="proj-left">
+            <div class="proj-name">HuaWei</div>
+            <div class="proj-desc">Financial Analysis · Technology Sector</div>
+          </div>
+          <div class="proj-right">
+            <span class="proj-tag">Analysis</span>
+            <span class="proj-arrow">→</span>
+          </div>
+        </a>
+        <div class="proj-row disabled" data-name="Project Three">
+          <div class="proj-left">
+            <div class="proj-name">Project Three</div>
+            <div class="proj-desc">Coming soon</div>
+          </div>
+          <div class="proj-right">
+            <span class="proj-tag">Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bottom">
+    <a class="email-link" href="/cdn-cgi/l/email-protection#06626768687f3630373e283446616b676f6a2865696b"><span class="__cf_email__" data-cfemail="8aeeebe4e4f3babcbbb2a4b8caede7ebe3e6a4e9e5e7">[email&#160;protected]</span></a>
+    <span class="copyright">© 2026 Danny Tsai</span>
+  </div>
+</div>
+
+<div id="cursor-hint">move mouse · click to seed</div>
+<div id="tweaks-root"></div>
+
+<!-- Search filter -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const searchInput = document.getElementById('search');
+const rows = document.querySelectorAll('#project-list .proj-row');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  rows.forEach(row => {
+    const name = (row.dataset.name || '').toLowerCase();
+    row.classList.toggle('hidden', q.length > 0 && !name.includes(q));
+  });
+});
+document.getElementById('works').addEventListener('click', e => e.stopPropagation());
+</script>
+
+<!-- WebGL shader -->
+<script>
+const canvas = document.getElementById('glCanvas');
+const gl = canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+let W = 0, H = 0;
+let mouseX = 0.5, mouseY = 0.5;
+let clicks = [];
+let time = 0, startTime = null;
+
+// Shader uniforms driven by tweaks
+window.shaderParams = {
+  brightness: 1.1,
+  sharpness: 0.83,
+  speed: 1.7,
+  iridescence: 0.22,
+  cellScale: 4.9,
+  mouseStrength: 0
+};
+
+const VS = `
+attribute vec2 a_pos;
+void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+`;
+
+const FS = `
+precision highp float;
+uniform vec2  u_res;
+uniform vec2  u_mouse;
+uniform float u_time;
+uniform vec2  u_clicks[8];
+uniform float u_clickTimes[8];
+uniform int   u_clickCount;
+
+// Tweakable uniforms
+uniform float u_brightness;
+uniform float u_sharpness;
+uniform float u_speed;
+uniform float u_iridescence;
+uniform float u_cellScale;
+uniform float u_mouseStrength;
+
+vec2 hash2(vec2 p) {
+  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+  return fract(sin(p) * 43758.5453);
+}
+
+// Iridescent hue shift
+vec3 iriColor(float t, float strength) {
+  // prismatic offset: red-gold-blue-violet cycling
+  vec3 a = vec3(0.5);
+  vec3 b = vec3(0.5);
+  vec3 c = vec3(1.0, 1.0, 0.8);
+  vec3 d = vec3(0.30, 0.20, 0.55);
+  return a + b * cos(6.28318 * (c * t + d)) * strength;
+}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_res;
+  vec2 aspect = vec2(u_res.x / u_res.y, 1.0);
+  float t = u_time * u_speed;
+  vec2 st = uv * aspect * u_cellScale;
+  vec2 m  = u_mouse * aspect * u_cellScale;
+
+  // ── Layer 1: primary voronoi ──
+  vec2 i1 = floor(st); vec2 f1 = fract(st);
+  float d1min = 10.0, d1min2 = 10.0;
+  vec2 h1best = vec2(0.0);
+
+  for (int y = -2; y <= 2; y++) {
+    for (int x = -2; x <= 2; x++) {
+      vec2 nb = vec2(float(x), float(y));
+      vec2 h  = hash2(i1 + nb);
+      vec2 anim = h + 0.38 * sin(t * 0.55 + h * 6.283 + nb * 0.4);
+      vec2 pt   = nb + anim;
+      vec2 cw   = i1 + nb + anim;
+      float md  = length(cw - m);
+      pt += normalize(cw - m + vec2(0.001)) * u_mouseStrength / (1.0 + md * md * 0.45);
+      float d = length(f1 - pt);
+      if (d < d1min) { d1min2 = d1min; d1min = d; h1best = h; }
+      else if (d < d1min2) { d1min2 = d; }
+    }
+  }
+  float edge1 = d1min2 - d1min;
+
+  // ── Layer 2: finer cells ──
+  vec2 st2 = st * 1.65 + vec2(3.1, 7.4);
+  vec2 i2 = floor(st2); vec2 f2 = fract(st2);
+  float d2min = 10.0, d2min2 = 10.0;
+  for (int y = -2; y <= 2; y++) {
+    for (int x = -2; x <= 2; x++) {
+      vec2 nb = vec2(float(x), float(y));
+      vec2 h  = hash2(i2 + nb);
+      vec2 pt = nb + h + 0.28 * sin(t * 0.33 + h * 6.283);
+      float d = length(f2 - pt);
+      if (d < d2min) { d2min2 = d2min; d2min = d; }
+      else if (d < d2min2) { d2min2 = d; }
+    }
+  }
+  float edge2 = d2min2 - d2min;
+
+  // ── Edge sharpness (tweakable — higher = crisper facets) ──
+  float edgeW1 = mix(0.12, 0.025, u_sharpness);
+  float edgeW2 = mix(0.09, 0.018, u_sharpness);
+  float b1 = smoothstep(0.0, edgeW1, edge1);
+  float b2 = smoothstep(0.0, edgeW2, edge2);
+  float facet = b1 * 0.72 + b2 * 0.28;
+
+  // ── Specular highlight on facets ──
+  // Fake normal from edge gradient — brighter near cell centers
+  float spec = pow(b1, 3.5) * 0.6 + pow(b2, 2.5) * 0.2;
+
+  // ── Iridescence on edges (thin-film effect) ──
+  float iridT = edge1 * 6.0 + t * 0.18 + h1best.x * 3.14;
+  vec3 iriCol  = iriColor(iridT, u_iridescence * 0.13);
+
+  // ── Palette — high-contrast crystal: bright faces, very dark edges ──
+  vec3 cellPeak = vec3(1.00, 1.00, 1.00);
+  vec3 cellBody = vec3(0.92, 0.92, 0.92);
+  vec3 edgeDark = vec3(0.10, 0.10, 0.11);             // near-black edges
+  vec3 deepFace = vec3(0.62, 0.63, 0.65);
+
+  float cv = h1best.x * 0.5 + 0.5;
+  vec3 faceCol = mix(deepFace, mix(cellBody, cellPeak, spec * 1.2), b1);
+  vec3 base = mix(edgeDark, faceCol, smoothstep(0.0, edgeW1 * 1.5, edge1));
+  base = mix(base * 0.85, base, smoothstep(0.0, edgeW2 * 1.5, edge2));
+  base += iriCol * (1.0 - facet) * 2.2;
+
+  // ── Shimmer pulse ──
+  float shimmer = sin(t * 1.4 + h1best.x * 12.566 + h1best.y * 8.0) * 0.5 + 0.5;
+  base += vec3(0.05, 0.05, 0.05) * shimmer * b1 * 0.12;
+
+  // ── Mouse glow ──
+  float mgd = length(uv * aspect - u_mouse * aspect);
+  base += vec3(0.05, 0.05, 0.05) * exp(-mgd * mgd * 4.0) * 0.1;
+
+  // ── Click rings ──
+  for (int i = 0; i < 8; i++) {
+    if (i >= u_clickCount) break;
+    vec2 cp  = u_clicks[i] * aspect * u_cellScale;
+    float age = u_time - u_clickTimes[i];
+    if (age < 0.0 || age > 4.0) continue;
+    float d    = length(st - cp);
+    float ring = exp(-pow(d - age * 3.0, 2.0) * 14.0) * exp(-age * 0.9);
+    float glow = exp(-length(st - cp) * 0.65) * exp(-age * 2.2) * 0.25;
+    base += vec3(0.10, 0.10, 0.10) * (ring + glow);
+    // Iridescent ring tint
+    base += iriColor(age * 0.8 + d * 0.3, 0.18) * ring * u_iridescence;
+  }
+
+  // ── Brightness ──
+  base *= u_brightness;
+
+  // ── Vignette ──
+  vec2 vigUV = uv - 0.5;
+  base *= 1.0 - dot(vigUV, vigUV) * 0.18;
+
+  base = clamp(base, 0.0, 1.0);
+  gl_FragColor = vec4(base, 1.0);
+}
+`;
+
+function compile(src, type) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src); gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); return null; }
+  return s;
+}
+
+const prog = (() => {
+  if (!gl) return null;
+  const vs = compile(VS, gl.VERTEX_SHADER);
+  const fs = compile(FS, gl.FRAGMENT_SHADER);
+  if (!vs || !fs) return null;
+  const p = gl.createProgram();
+  gl.attachShader(p, vs); gl.attachShader(p, fs); gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.error(gl.getProgramInfoLog(p)); return null; }
+  ['u_res','u_mouse','u_time','u_clicks','u_clickTimes','u_clickCount',
+   'u_brightness','u_sharpness','u_speed','u_iridescence','u_cellScale','u_mouseStrength'
+  ].forEach(n => p[n] = gl.getUniformLocation(p, n));
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,-1,1,1,-1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(p, 'a_pos');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  return p;
+})();
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  if (gl) gl.viewport(0, 0, W, H);
+}
+window.addEventListener('resize', resize);
+resize();
+
+window.addEventListener('mousemove', e => {
+  mouseX = e.clientX / W;
+  mouseY = 1.0 - e.clientY / H;
+});
+window.addEventListener('click', e => {
+  clicks.push({ x: e.clientX / W, y: 1.0 - e.clientY / H, t: time });
+  if (clicks.length > 8) clicks.shift();
+});
+window.addEventListener('touchmove', e => {
+  mouseX = e.touches[0].clientX / W;
+  mouseY = 1.0 - e.touches[0].clientY / H;
+}, { passive: true });
+window.addEventListener('touchstart', e => {
+  clicks.push({ x: e.touches[0].clientX / W, y: 1.0 - e.touches[0].clientY / H, t: time });
+  if (clicks.length > 8) clicks.shift();
+}, { passive: true });
+
+function render(ts) {
+  if (!startTime) startTime = ts;
+  time = (ts - startTime) / 1000.0;
+  if (gl && prog) {
+    const sp = window.shaderParams;
+    gl.useProgram(prog);
+    gl.uniform2f(prog.u_res, W, H);
+    gl.uniform2f(prog.u_mouse, mouseX, mouseY);
+    gl.uniform1f(prog.u_time, time);
+    gl.uniform1f(prog.u_brightness, sp.brightness);
+    gl.uniform1f(prog.u_sharpness, sp.sharpness);
+    gl.uniform1f(prog.u_speed, sp.speed);
+    gl.uniform1f(prog.u_iridescence, sp.iridescence);
+    gl.uniform1f(prog.u_cellScale, sp.cellScale);
+    gl.uniform1f(prog.u_mouseStrength, sp.mouseStrength);
+    const cx = new Float32Array(16), ct = new Float32Array(8);
+    const count = Math.min(clicks.length, 8);
+    for (let i = 0; i < count; i++) { cx[i*2] = clicks[i].x; cx[i*2+1] = clicks[i].y; ct[i] = clicks[i].t; }
+    gl.uniform2fv(prog.u_clicks, cx);
+    gl.uniform1fv(prog.u_clickTimes, ct);
+    gl.uniform1i(prog.u_clickCount, count);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+  }
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+</script>
+
+<!-- Tweaks panel -->
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "brightness": 1.1,
+  "sharpness": 0.83,
+  "speed": 1.7,
+  "iridescence": 0.22,
+  "cellScale": 4.9,
+  "mouseStrength": 0
+}/*EDITMODE-END*/;
+
+function ShaderTweaks() {
+  const { useTweaks, TweaksPanel, TweakSection, TweakSlider } = window;
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    window.shaderParams = {
+      brightness:    tweaks.brightness,
+      sharpness:     tweaks.sharpness,
+      speed:         tweaks.speed,
+      iridescence:   tweaks.iridescence,
+      cellScale:     tweaks.cellScale,
+      mouseStrength: tweaks.mouseStrength,
+    };
+  }, [tweaks]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Crystal">
+        <TweakSlider
+          label="Brightness"
+          value={tweaks.brightness}
+          min={0.7} max={1.6} step={0.01}
+          onChange={v => setTweak('brightness', v)}
+        />
+        <TweakSlider
+          label="Sharpness"
+          value={tweaks.sharpness}
+          min={0} max={1} step={0.01}
+          onChange={v => setTweak('sharpness', v)}
+        />
+        <TweakSlider
+          label="Iridescence"
+          value={tweaks.iridescence}
+          min={0} max={1} step={0.01}
+          onChange={v => setTweak('iridescence', v)}
+        />
+      </TweakSection>
+      <TweakSection label="Motion">
+        <TweakSlider
+          label="Speed"
+          value={tweaks.speed}
+          min={0.1} max={2.5} step={0.05}
+          onChange={v => setTweak('speed', v)}
+        />
+        <TweakSlider
+          label="Cell Scale"
+          value={tweaks.cellScale}
+          min={2.0} max={12.0} step={0.1}
+          onChange={v => setTweak('cellScale', v)}
+        />
+      </TweakSection>
+      <TweakSection label="Interaction">
+        <TweakSlider
+          label="Mouse Repel"
+          value={tweaks.mouseStrength}
+          min={0} max={0.6} step={0.01}
+          onChange={v => setTweak('mouseStrength', v)}
+        />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+function mountWhenReady() {
+  if (window.TweaksPanel && window.useTweaks) {
+    ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<ShaderTweaks />);
+  } else {
+    setTimeout(mountWhenReady, 50);
+  }
+}
+mountWhenReady();
+</script>
+
+</body>
+</html>
